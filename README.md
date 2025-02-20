@@ -72,7 +72,6 @@ classDiagram
             - balance : Double
             - accountType : AccountType
             - client : Client
-            - branchNumber : String
         }
 
         class SavingsAccount{
@@ -92,7 +91,7 @@ classDiagram
             - PAYROLL
         }
         class BankingSystem{
-            + registerClient(client : Client) void
+            + registerClient(client : Client) Client
             + listClients() void
             + registerAccount(account : Account) void
             + listAccounts() void
