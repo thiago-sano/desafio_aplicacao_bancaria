@@ -48,14 +48,14 @@ public class UI {
                 case 1:{
                     System.out.print("CPF (somente numeros): ");
                     String clientId = sc.next();
-                    return new Personal(clientName, clientEmail, clientId, ClientType.PERSONAL);
+                    return new Personal(clientName, clientEmail, clientId);
                 }
                 case 2:{
                     System.out.print("CNPJ (somente numeros): ");
                     String clientId = sc.next();
                     System.out.print("CAPITAL DECLARADO: ");
                     Double clientStatedCapital = sc.nextDouble();
-                    return new Business(clientName, clientEmail,clientId, ClientType.BUSINESS, clientStatedCapital);
+                    return new Business(clientName, clientEmail,clientId, clientStatedCapital);
                 }
                 default:{
                     System.out.println("-> OPCAO INVALIDA");
@@ -72,7 +72,6 @@ public class UI {
         String branchNumber = sc.next();
         System.out.print("NUMERO DA CONTA: ");
         String accountNumber = sc.next();
-        Double balance = 0.0;
         while (true){
             System.out.println();
             if (client.getClientType().getAccountType() == 1){
@@ -84,13 +83,13 @@ public class UI {
                 System.out.println();
                 switch (option){
                     case 1:{ // CONTA CORRENTE
-                        return new CheckingAccount(branchNumber, accountNumber, balance, AccountType.CHECKING, client);
+                        return new CheckingAccount(branchNumber, accountNumber, client);
                     }
                     case 2:{ // CONTA POUPANCA
-                        return new SavingsAccount(branchNumber, accountNumber, balance, AccountType.SAVINGS, client);
+                        return new SavingsAccount(branchNumber, accountNumber, client);
                     }
                     case 3: { // CONTA SALARIO
-                        return new PayrollAccount(branchNumber, accountNumber, balance, AccountType.PAYROLL, client);
+                        return new PayrollAccount(branchNumber, accountNumber, client);
                     }
                     default:{
                         System.out.println("-> OPCAO INVALIDA");
@@ -106,7 +105,7 @@ public class UI {
                 System.out.println();
                 switch (option){
                     case 1:{ // CONTA CORRENTE
-                        return new CheckingAccount(branchNumber, accountNumber, balance, AccountType.CHECKING, client);
+                        return new CheckingAccount(branchNumber, accountNumber, client);
                     }
                     default:{
                         System.out.println("-> OPCAO INVALIDA");

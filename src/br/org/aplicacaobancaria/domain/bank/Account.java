@@ -9,11 +9,10 @@ public abstract class Account {
     private AccountType accountType;
     private Client client;
 
-    public Account(String branchNumber, String accountNumber, Double balance, AccountType accountType, Client client) {
+    public Account(String branchNumber, String accountNumber, Client client) {
         this.branchNumber = branchNumber;
         this.accountNumber = accountNumber;
-        this.balance = balance;
-        this.accountType = accountType;
+        this.balance = balance = 0.0;
         this.client = client;
     }
 

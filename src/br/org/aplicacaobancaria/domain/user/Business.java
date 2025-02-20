@@ -2,9 +2,10 @@ package br.org.aplicacaobancaria.domain.user;
 
 public class Business extends Client{
     private Double statedCapital;
+    private final ClientType clientType;
 
-    public Business(String name, String email, String id, ClientType clientType, Double statedCapital) {
-        super(name, email, id, clientType);
+    public Business(String name, String email, String id, Double statedCapital) {
+        super(name, email, id);
         this.statedCapital = statedCapital;
         clientType = ClientType.BUSINESS;
     }
@@ -15,6 +16,11 @@ public class Business extends Client{
 
     public void setStatedCapital(Double statedCapital) {
         this.statedCapital = statedCapital;
+    }
+
+    @Override
+    public ClientType getClientType() {
+        return clientType;
     }
 
     @Override

@@ -1,11 +1,16 @@
 package br.org.aplicacaobancaria.domain.user;
 
 public class Personal extends Client{
+    private final ClientType clientType;
 
-
-    public Personal(String name, String email, String id, ClientType clientType) {
-        super(name, email, id, clientType);
+    public Personal(String name, String email, String id) {
+        super(name, email, id);
         clientType = ClientType.PERSONAL;
+    }
+
+    @Override
+    public ClientType getClientType() {
+        return clientType;
     }
 
     @Override

@@ -4,13 +4,12 @@ public abstract class Client {
     private String name;
     private String email;
     private String id;
-    private final ClientType clientType;
+    private ClientType clientType;
 
-    public Client(String name, String email, String id, ClientType clientType) {
+    public Client(String name, String email, String id) {
         this.name = name;
         this.email = email;
         this.id = id;
-        this.clientType = clientType;
     }
 
     public String getName() {
