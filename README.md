@@ -36,7 +36,14 @@ A aplicação deve conter um menu via terminal para seleção da operação dese
 classDiagram
     Client <|-- Personal
     Client <|-- Business
+    Account <|-- SavingsAccount
+    Account <|-- CheckingAccount
+    Account <|-- PayrollAccount
+    Client "1" *--> "1..*" Account : client
+    Client "1..*" --> "1" BankingSystem : client
 
+    BankingSystem "1" <-- "1..*" Account : account
+    
     namespace user{
         class Client{
             <<abstract>>
@@ -55,6 +62,40 @@ classDiagram
             <<enum>>
             - PERSONAL
             - BUSINESS
+        }
+    }
+    namespace bank{
+
+        class Account {
+            <<abstract>>
+            - accountNumber : String
+            - balance : Double
+            - accountType : AccountType
+            - client : Client
+            - branchNumber : String
+        }
+
+        class SavingsAccount{
+
+        }
+        class CheckingAccount{
+            - limit : Double
+            - availableLimit : Double
+        }
+        class PayrollAccount{
+
+        }
+        class AccountType{
+            <<enum>>
+            - SAVINGS
+            - CHECKING
+            - PAYROLL
+        }
+        class BankingSystem{
+            + registerClient(client : Client) void
+            + listClients() void
+            + registerAccount(account : Account) void
+            + listAccounts() void
         }
     }
 
