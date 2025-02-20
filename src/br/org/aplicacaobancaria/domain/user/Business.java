@@ -2,12 +2,11 @@ package br.org.aplicacaobancaria.domain.user;
 
 public class Business extends Client{
     private Double statedCapital;
-    private final ClientType clientType;
 
-    public Business(String name, String email, String id, Double statedCapital) {
-        super(name, email, id);
+    public Business(String name, String email, String id, ClientType clientType, Double statedCapital) {
+        super(name, email, id, clientType);
         this.statedCapital = statedCapital;
-        this.clientType = ClientType.BUSINESS;
+        clientType = ClientType.BUSINESS;
     }
 
     public Double getStatedCapital() {
@@ -18,12 +17,8 @@ public class Business extends Client{
         this.statedCapital = statedCapital;
     }
 
-    public ClientType getClientType() {
-        return clientType;
-    }
-
     @Override
     public String toString() {
-        return String.format("Nome: %-15s | Email: %-30s | CPF/CNPJ: %-16s | Tipo: %-10s | Capital: %,.2f", getName(), getEmail(), getId(), getClientType().getNome(), getStatedCapital());
+        return String.format("Nome: %-15s | Email: %-30s | CPF/CNPJ: %-16s | Tipo: %-10s | Capital: %,.2f", getName(), getEmail(), getId(), getClientType().getName(), getStatedCapital());
     }
 }
