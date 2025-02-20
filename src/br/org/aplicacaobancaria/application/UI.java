@@ -1,6 +1,6 @@
 package br.org.aplicacaobancaria.application;
 
-import br.org.aplicacaobancaria.domain.bank.Account;
+import br.org.aplicacaobancaria.domain.bank.*;
 import br.org.aplicacaobancaria.domain.user.Business;
 import br.org.aplicacaobancaria.domain.user.Client;
 import br.org.aplicacaobancaria.domain.user.ClientType;
@@ -31,18 +31,18 @@ public class UI {
         Scanner sc = new Scanner(System.in);
 
         System.out.print("NOME DO CLIENTE: ");
-        String clientName = sc.next().toUpperCase();
+        String clientName = sc.nextLine();
         System.out.print("EMAIL DO CLIENTE: ");
-        String clientEmail = sc.next().toUpperCase();
+        String clientEmail = sc.nextLine();
 
         while (true){
-            // print com numeracao e utilizacao da classe enum
             System.out.println();
             for(ClientType ct : ClientType.values()){
-                System.out.println(ct.getMenuName());
+                System.out.println(String.format("%d - %s", ct.getId(), ct.getName()));
             }
             System.out.print("INFORME O NUMERO: ");
             int option = readMenuOption();
+            System.out.println();
             switch (option){
                 case 1:{
                     System.out.print("CPF (somente numeros): ");
@@ -64,21 +64,59 @@ public class UI {
         }
     }
 
-//    public static Account printRegisterAccount(){
-//        Scanner sc = new Scanner(System.in);
-//
+    public static Account printRegisterAccount(Client client){
+        Scanner sc = new Scanner(System.in);
+
 //        System.out.print("NUMERO DA AGENCIA: ");
 //        String branchNumber = sc.next();
-//        System.out.print("NUMERO DA CONTA: ");
-//        String accountNumber = sc.next();
-//        Double balance = 0.0;
-//        //client
-//
-//        //AccountType
-//
-//
-//    }
+        System.out.print("NUMERO DA CONTA: ");
+        String accountNumber = sc.next();
+        Double balance = 0.0;
+        while (true){
+            System.out.println();
+            if (client.getClientType().getAccountType() == 1){
+                for(AccountType at : AccountType.values()){
+                        System.out.println(String.format("%d - %s", at.getId(), at.getName()));
+                }
+                System.out.print("INFORME O NUMERO: ");
+                int option = readMenuOption();
+                System.out.println();
+                switch (option){
+                    case 1:{ // CONTA CORRENTE
+                        return new CheckingAccount(accountNumber, balance, AccountType.CHECKING, client);
+                    }
+                    case 2:{ // CONTA POUPANCA
+                        return new SavingsAccount(accountNumber, balance, AccountType.SAVINGS, client);
+                    }
+                    case 3: { // CONTA SALARIO
+                        return new PayrollAccount(accountNumber, balance, AccountType.PAYROLL, client);
+                    }
+                    default:{
+                        System.out.println("-> OPCAO INVALIDA");
+                        break;
+                    }
+                }
+            }
+            else{
+                AccountType at = AccountType.valueOf("CHECKING");
+                System.out.println(String.format("%d - %s", at.getId(), at.getName()));
+                System.out.print("INFORME O NUMERO: ");
+                int option = readMenuOption();
+                System.out.println();
+                switch (option){
+                    case 1:{ // CONTA CORRENTE
+                        return new CheckingAccount(accountNumber, balance, AccountType.CHECKING, client);
+                    }
+                    default:{
+                        System.out.println("-> OPCAO INVALIDA");
+                        break;
+                    }
+                }
+                System.out.println();
+            }
 
+        }
+    }
 
     public static int readMenuOption(){
         Scanner sc = new Scanner(System.in);
