@@ -7,8 +7,8 @@ public class SavingsAccount extends Account{
     private Double availableLimit;
     private final AccountType accountType;
 
-    public SavingsAccount(String accountNumber, Double balance, AccountType accountType, Client client) {
-        super(accountNumber, balance, accountType, client);
+    public SavingsAccount(String branchNumber, String accountNumber, Double balance, AccountType accountType, Client client) {
+        super(branchNumber, accountNumber, balance, accountType, client);
         this.limit = this.availableLimit = 0.0;
         this.accountType = AccountType.SAVINGS;
     }

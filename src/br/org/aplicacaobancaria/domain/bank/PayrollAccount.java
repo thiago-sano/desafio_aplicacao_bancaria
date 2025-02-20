@@ -7,8 +7,8 @@ public class PayrollAccount extends Account{
     private Double availableLimit;
     private final AccountType accountType;
 
-    public PayrollAccount(String accountNumber, Double balance, AccountType accountType, Client client) {
-        super(accountNumber, balance, accountType, client);
+    public PayrollAccount(String branchNumber, String accountNumber, Double balance, AccountType accountType, Client client) {
+        super(branchNumber, accountNumber, balance, accountType, client);
         this.limit = this.availableLimit = 0.0;
         this.accountType = AccountType.PAYROLL;
     }

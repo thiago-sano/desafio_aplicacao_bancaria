@@ -7,8 +7,8 @@ public class CheckingAccount extends Account{
     private Double availableLimit;
     private final AccountType accountType;
 
-    public CheckingAccount(String accountNumber, Double balance, AccountType accountType, Client client) {
-        super(accountNumber, balance, accountType, client);
+    public CheckingAccount(String branchNumber, String accountNumber, Double balance, AccountType accountType, Client client) {
+        super(branchNumber, accountNumber, balance, accountType, client);
         this.availableLimit = 100.0;
         this.limit = availableLimit;
         this.accountType = AccountType.CHECKING;

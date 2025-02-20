@@ -21,7 +21,8 @@ public class UI {
         System.out.println("2 - LISTAR CLIENTES");
         System.out.println("3 - CADASTRO DE CONTA");
         System.out.println("4 - LISTAR CONTAS");
-        System.out.println("5 - SAIR");
+        System.out.println("5 - ENTRAR EM CONTA");
+        System.out.println("6 - SAIR");
         System.out.print("Digite uma opcao: ");
         option = readMenuOption();
         return option;
@@ -67,8 +68,8 @@ public class UI {
     public static Account printRegisterAccount(Client client){
         Scanner sc = new Scanner(System.in);
 
-//        System.out.print("NUMERO DA AGENCIA: ");
-//        String branchNumber = sc.next();
+        System.out.print("NUMERO DA AGENCIA: ");
+        String branchNumber = sc.next();
         System.out.print("NUMERO DA CONTA: ");
         String accountNumber = sc.next();
         Double balance = 0.0;
@@ -83,13 +84,13 @@ public class UI {
                 System.out.println();
                 switch (option){
                     case 1:{ // CONTA CORRENTE
-                        return new CheckingAccount(accountNumber, balance, AccountType.CHECKING, client);
+                        return new CheckingAccount(branchNumber, accountNumber, balance, AccountType.CHECKING, client);
                     }
                     case 2:{ // CONTA POUPANCA
-                        return new SavingsAccount(accountNumber, balance, AccountType.SAVINGS, client);
+                        return new SavingsAccount(branchNumber, accountNumber, balance, AccountType.SAVINGS, client);
                     }
                     case 3: { // CONTA SALARIO
-                        return new PayrollAccount(accountNumber, balance, AccountType.PAYROLL, client);
+                        return new PayrollAccount(branchNumber, accountNumber, balance, AccountType.PAYROLL, client);
                     }
                     default:{
                         System.out.println("-> OPCAO INVALIDA");
@@ -105,7 +106,7 @@ public class UI {
                 System.out.println();
                 switch (option){
                     case 1:{ // CONTA CORRENTE
-                        return new CheckingAccount(accountNumber, balance, AccountType.CHECKING, client);
+                        return new CheckingAccount(branchNumber, accountNumber, balance, AccountType.CHECKING, client);
                     }
                     default:{
                         System.out.println("-> OPCAO INVALIDA");

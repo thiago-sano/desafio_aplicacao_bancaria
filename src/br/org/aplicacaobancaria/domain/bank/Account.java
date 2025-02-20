@@ -3,12 +3,14 @@ package br.org.aplicacaobancaria.domain.bank;
 import br.org.aplicacaobancaria.domain.user.Client;
 
 public abstract class Account {
+    private String branchNumber;
     private String accountNumber;
     private Double balance;
     private AccountType accountType;
     private Client client;
 
-    public Account(String accountNumber, Double balance, AccountType accountType, Client client) {
+    public Account(String branchNumber, String accountNumber, Double balance, AccountType accountType, Client client) {
+        this.branchNumber = branchNumber;
         this.accountNumber = accountNumber;
         this.balance = balance;
         this.accountType = accountType;
@@ -47,8 +49,16 @@ public abstract class Account {
         this.accountNumber = accountNumber;
     }
 
+    public String getBranchNumber() {
+        return branchNumber;
+    }
+
+    public void setBranchNumber(String branchNumber) {
+        this.branchNumber = branchNumber;
+    }
+
     @Override
     public String toString() {
-        return String.format("Nome: %-20s | Tipo: %-10s | CPF/CNPJ : %-15s | Conta: %-7s | Tipo de conta: %-15s | Saldo: %.2f", getClient().getName(), getClient().getClientType().getName(), getClient().getId(), getAccountNumber(), getAccountType().getName(), getBalance());
+        return String.format("Nome: %-20s | Tipo: %-10s | CPF/CNPJ : %-15s | Agencia: %-4s | Conta: %-7s | Tipo de conta: %-15s | Saldo: %.2f", getClient().getName(), getClient().getClientType().getName(), getClient().getId(), getBranchNumber(), getAccountNumber(), getAccountType().getName(), getBalance());
     }
 }
