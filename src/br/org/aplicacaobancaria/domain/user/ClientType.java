@@ -1,30 +1,30 @@
 package br.org.aplicacaobancaria.domain.user;
 
 public enum ClientType {
-    PERSONAL ("PESSOA FISICA", "B2C"),
-    BUSINESS ("PESSOA JURIDICA", "B2B");
+    PERSONAL ("1 - PESSOA FISICA", "PESSOA FISICA"),
+    BUSINESS ("2 - PESSOA JURIDICA", "PESSOA JURIDICA");
 
+    private String menuName;
     private String name;
-    private String abbreviation;
 
-    ClientType(String name, String abbreviation) {
+    ClientType(String menuName, String name) {
+        this.menuName = menuName;
         this.name = name;
-        this.abbreviation = abbreviation;
+    }
+
+    public String getMenuName() {
+        return menuName.toUpperCase();
+    }
+
+    public void setMenuName(String menuName) {
+        this.menuName = menuName;
     }
 
     public String getName() {
         return name.toUpperCase();
     }
 
-    public void setNome(String nome) {
+    public void setName(String name) {
         this.name = name;
-    }
-
-    public String getAbbreviation() {
-        return abbreviation.toUpperCase();
-    }
-
-    public void setAbbreviation(String abbreviation) {
-        this.abbreviation = abbreviation;
     }
 }

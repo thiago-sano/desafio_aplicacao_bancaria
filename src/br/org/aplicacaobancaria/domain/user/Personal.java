@@ -10,6 +10,6 @@ public class Personal extends Client{
 
     @Override
     public String toString() {
-        return String.format("Nome: %-15s | Email: %-30s | CPF/CNPJ : %-15s | Tipo: %-10s", getName(), getEmail(), getId(), getClientType().getAbbreviation());
+        return String.format("Nome: %-15s | Email: %-30s | CPF/CNPJ : %-15s | Tipo: %-10s", getName(), getEmail(), getId(), getClientType().getName());
     }
 }
