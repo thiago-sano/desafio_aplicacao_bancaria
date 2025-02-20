@@ -21,21 +21,36 @@ public class BankingSystem {
         return client;
     }
 
-    public void listClients(){
-        for (Client client : clients){
-            System.out.println(client);
-        }
-        System.out.println();
+//    public void listClients(){
+//        for (Client client : clients){
+//            System.out.println(client);
+//        }
+//        System.out.println();
+//    }
+    public Set<Client> listClients(){
+        return clients;
     }
 
     public void registerAccount(Account account){
         accounts.add(account);
     }
 
-    public void listAccounts(){
-        for (Account account : accounts){
-            System.out.println(account);
+//    public void listAccounts(){
+//        for (Account account : accounts){
+//            System.out.println(account);
+//        }
+//        System.out.println();
+//    }
+    public List<Account> listAccounts(){
+        return accounts;
+    }
+
+    public Account findAccountByUserId(List<Account> accounts, String userId) {
+        for (Account account : accounts) {
+            if (account.getClient().getId().equals(userId)) {
+                return account;
+            }
         }
-        System.out.println();
+        return null;
     }
 }

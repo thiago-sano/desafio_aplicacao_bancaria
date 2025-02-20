@@ -32,14 +32,14 @@ public class UI {
         Scanner sc = new Scanner(System.in);
 
         System.out.print("NOME DO CLIENTE: ");
-        String clientName = sc.nextLine();
+        String clientName = sc.next();
         System.out.print("EMAIL DO CLIENTE: ");
-        String clientEmail = sc.nextLine();
+        String clientEmail = sc.next();
 
         while (true){
             System.out.println();
             for(ClientType ct : ClientType.values()){
-                System.out.println(String.format("%d - %s", ct.getId(), ct.getName()));
+                System.out.printf("%d - %s%n", ct.getId(), ct.getName());
             }
             System.out.print("INFORME O NUMERO: ");
             int option = readMenuOption();
@@ -77,7 +77,7 @@ public class UI {
             System.out.println();
             if (client.getClientType().getAccountType() == 1){
                 for(AccountType at : AccountType.values()){
-                        System.out.println(String.format("%d - %s", at.getId(), at.getName()));
+                        System.out.printf("%d - %s%n", at.getId(), at.getName());
                 }
                 System.out.print("INFORME O NUMERO: ");
                 int option = readMenuOption();
@@ -100,7 +100,7 @@ public class UI {
             }
             else{
                 AccountType at = AccountType.valueOf("CHECKING");
-                System.out.println(String.format("%d - %s", at.getId(), at.getName()));
+                System.out.printf("%d - %s%n", at.getId(), at.getName());
                 System.out.print("INFORME O NUMERO: ");
                 int option = readMenuOption();
                 System.out.println();
@@ -119,6 +119,12 @@ public class UI {
         }
     }
 
+    public static String printLoginAccount(){
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("CPF/CNPJ: ");
+        return sc.next();
+    }
     public static int readMenuOption(){
         Scanner sc = new Scanner(System.in);
         return sc.nextInt();
