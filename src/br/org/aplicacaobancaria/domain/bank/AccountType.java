@@ -1,21 +1,22 @@
 package br.org.aplicacaobancaria.domain.bank;
 
 public enum AccountType {
-    SAVINGS("conta poupanca"),
-    CHECKING("Conta corrente"),
-    PAYROLL("Conta de pagamento");
+    CHECKING(1, "CONTA CORRENTE"),
+    SAVINGS(2, "CONTA POUPANCA"),
+    PAYROLL(3, "CONTA SALARIO");
 
-    private String nome;
+    private int id;
+    private String name;
 
-    AccountType(String nome) {
-        this.nome = nome;
+    AccountType(int id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
-    public String getNome() {
-        return nome.toUpperCase();
+    public int getId(){
+        return id;
     }
-
-    public void setNome(String nome) {
-        this.nome = nome;
+    public String getName() {
+        return name.toUpperCase();
     }
 }

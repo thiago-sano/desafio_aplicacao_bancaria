@@ -1,30 +1,28 @@
 package br.org.aplicacaobancaria.domain.user;
 
 public enum ClientType {
-    PERSONAL ("1 - PESSOA FISICA", "PESSOA FISICA"),
-    BUSINESS ("2 - PESSOA JURIDICA", "PESSOA JURIDICA");
+    PERSONAL (1,"PESSOA FISICA", 1),
+    BUSINESS (2, "PESSOA JURIDICA", 2);
 
-    private String menuName;
+    private int id;
     private String name;
+    private int accountType;
 
-    ClientType(String menuName, String name) {
-        this.menuName = menuName;
+    ClientType(int id, String name, int accountType) {
+        this.id = id;
         this.name = name;
+        this.accountType = accountType;
     }
 
-    public String getMenuName() {
-        return menuName.toUpperCase();
-    }
-
-    public void setMenuName(String menuName) {
-        this.menuName = menuName;
+    public int getId(){
+        return id;
     }
 
     public String getName() {
         return name.toUpperCase();
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public int getAccountType(){
+        return accountType;
     }
 }
