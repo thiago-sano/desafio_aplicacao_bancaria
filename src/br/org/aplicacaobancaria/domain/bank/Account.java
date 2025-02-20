@@ -46,4 +46,9 @@ public abstract class Account {
     public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Nome: %-20s | Tipo: %-10s | CPF/CNPJ : %-15s | Conta: %-7s | Tipo de conta: %-15s | Saldo: %.2f", getClient().getName(), getClient().getClientType().getName(), getClient().getId(), getAccountNumber(), getAccountType().getName(), getBalance());
+    }
 }
