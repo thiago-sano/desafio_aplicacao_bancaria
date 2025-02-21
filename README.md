@@ -104,8 +104,9 @@ classDiagram
             + registerAccount(account : Account) void
             + listAccounts() void
             + findAccountByUserId(accounts : List<Account>, userId : String)
-            + depositTransaction(amount : double, account Account)
-            + withdrawTransaction(amount : double, account Account)
+            + depositTransaction(amount : double, account : Account)
+            + withdrawTransaction(amount : double, account : Account)
+            + transferTransaction(transaction : Transaction, sender : Account)
         }
     }
     
@@ -114,6 +115,7 @@ classDiagram
             - amount : double
             - sender : Account
             - receiver : Account
+            - receiverId : String
             - transactionType : TransactionType
             - transactionDate : LocalDateTime
 
@@ -123,15 +125,15 @@ classDiagram
         }
         class Withdraw{
             <<interface>>
-            + withdraw : double
+            + withdraw : void
         }
         class Deposit{
             <<interface>>
-            + deposit : double
+            + deposit : void
         }
         class Transfer{
             <<interface>>
-            + transfer : double
+            + transfer : void
         }
         class Limit{
             <<interface>>

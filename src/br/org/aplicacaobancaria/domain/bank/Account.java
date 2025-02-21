@@ -16,6 +16,11 @@ public abstract class Account {
         this.client = client;
     }
 
+    public Account(String branchNumber, String accountNumber) {
+        this.branchNumber = branchNumber;
+        this.accountNumber = accountNumber;
+    }
+
     public Client getClient() {
         return client;
     }

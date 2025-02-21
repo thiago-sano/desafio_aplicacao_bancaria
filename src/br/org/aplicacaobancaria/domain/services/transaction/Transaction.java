@@ -6,20 +6,29 @@ public class Transaction implements Deposit, Transfer, Withdraw{
     private double amount;
     private Account sender;
     private Account receiver;
+    private String receiverId;
     private TransactionType transactionType;
 
     public Transaction(){
 
     }
-    public Transaction(double amount, Account receiver) {
+    public Transaction(double amount, String receiverId) {
         this.amount = amount;
-        this.receiver = receiver;
+        this.receiverId = receiverId;
     }
 
     public Transaction(double amount, Account sender, Account receiver) {
         this.amount = amount;
         this.sender = sender;
         this.receiver = receiver;
+    }
+
+    public String getReceiverId() {
+        return receiverId;
+    }
+
+    public void setReceiverId(String receiverId) {
+        this.receiverId = receiverId;
     }
 
     public double getAmount() {
@@ -55,17 +64,18 @@ public class Transaction implements Deposit, Transfer, Withdraw{
     }
 
     @Override
-    public double deposit(double amount, Account account) {
-        return account.getBalance() + amount;
+    public void deposit(double amount, Account account) {
+        account.setBalance(account.getBalance() + amount);
     }
 
     @Override
-    public double withdraw(double amount, Account account) {
-        return account.getBalance() - amount;
+    public void withdraw(double amount, Account account) {
+        account.setBalance(account.getBalance() - amount);
     }
 
     @Override
-    public double transfer(double amount, Account sender, Account receiver) {
-        return 0;
+    public void transfer(double amount, Account sender, Account receiver) {
+        sender.setBalance(sender.getBalance() - amount);
+        receiver.setBalance(receiver.getBalance() + amount);
     }
 }

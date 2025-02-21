@@ -1,6 +1,7 @@
 package br.org.aplicacaobancaria.application;
 
 import br.org.aplicacaobancaria.domain.bank.*;
+import br.org.aplicacaobancaria.domain.services.transaction.Transaction;
 import br.org.aplicacaobancaria.domain.user.Business;
 import br.org.aplicacaobancaria.domain.user.Client;
 import br.org.aplicacaobancaria.domain.user.Personal;
@@ -12,7 +13,6 @@ public class Program {
 
         BankingSystem bankingSystem = new BankingSystem();
         // Cadastro hardcode
-
         Client client1 = new Personal("Alex Carlos", "alexcarlos@gmail.com", "34865498778");
         Account account1 = new CheckingAccount("3926", "0045678-8", client1);
         bankingSystem.registerClient(client1);
@@ -78,24 +78,31 @@ public class Program {
                     String userId = UI.printLoginAccount();
                     Account account = bankingSystem.findAccountByUserId(bankingSystem.listAccounts(), userId);
                     if(account != null){
-                        // printar menu de conta logada com transacoes
-                        option = UI.printAccountMenu(account);
-                        switch (option){
-                            case 1:{
-                                double amount = UI.printWithdrawTransaction();
-                                bankingSystem.withdrawTransaction(amount, account);
-                                break;
+                        while(option !=4){
+                            option = UI.printAccountMenu(account);
+                            switch (option){
+                                case 1:{
+                                    double amount = UI.printWithdrawTransaction();
+                                    bankingSystem.withdrawTransaction(amount, account);
+                                    break;
+                                }
+                                case 2:{
+                                    double amount = UI.printDepositTransaction();
+                                    bankingSystem.depositTransaction(amount, account);
+                                    break;
+                                }
+                                case 3:{
+                                    // transferencia
+                                    Transaction transaction = UI.printTransferTransaction();
+                                    // retornado um Obj Transaction com amount e receiverId
+                                    bankingSystem.transferTransaction(transaction, account);
+                                    break;
+                                }
+                                case 4:{
+                                    System.out.println("DESLOGADO COM SUCESSO\n");
+                                    break;
+                                }
                             }
-                            case 2:{
-                                double amount = UI.printDepositTransaction();
-                                bankingSystem.depositTransaction(amount, account);
-                                break;
-                            }
-                            case 3:{
-                                // transferencia
-                                break;
-                            }
-
                         }
                     }
                     else {

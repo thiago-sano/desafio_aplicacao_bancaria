@@ -1,6 +1,7 @@
 package br.org.aplicacaobancaria.application;
 
 import br.org.aplicacaobancaria.domain.bank.*;
+import br.org.aplicacaobancaria.domain.services.transaction.Transaction;
 import br.org.aplicacaobancaria.domain.user.Business;
 import br.org.aplicacaobancaria.domain.user.Client;
 import br.org.aplicacaobancaria.domain.user.ClientType;
@@ -150,6 +151,17 @@ public class UI {
         Scanner sc = new Scanner(System.in);
         System.out.print("Valor a ser sacado: ");
         return sc.nextDouble();
+    }
+
+    public static Transaction printTransferTransaction(){
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("CPF/CNPJ de destino: ");
+        String receiverId = sc.next();
+        System.out.print("Valor a ser transferido: ");
+        double amount = sc.nextDouble();
+
+        return new Transaction(amount, receiverId);
     }
 
     public static int readMenuOption(){
