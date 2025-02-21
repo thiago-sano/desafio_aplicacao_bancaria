@@ -43,6 +43,14 @@ classDiagram
     Client "1..*" --> "1" BankingSystem : client
 
     BankingSystem "1" <-- "1..*" Account : account
+    BankingSystem "1" <-- "1..*" Transaction : transaction
+
+    Account "1" --> "1..*" Transaction : account
+
+    Transaction --|> Withdraw
+    Transaction --|> Deposit
+    Transaction --|> Transfer
+    Transaction --|> Limit
     
     namespace user{
         class Client{
@@ -64,16 +72,16 @@ classDiagram
             - BUSINESS
         }
     }
+    
     namespace bank{
-
         class Account {
             <<abstract>>
+            - branchNumber : String
             - accountNumber : String
             - balance : Double
             - accountType : AccountType
             - client : Client
         }
-
         class SavingsAccount{
 
         }
@@ -95,6 +103,45 @@ classDiagram
             + listClients() void
             + registerAccount(account : Account) void
             + listAccounts() void
+            + findAccountByUserId(accounts : List<Account>, userId : String)
+            + depositTransaction(amount : double, account Account)
+            + withdrawTransaction(amount : double, account Account)
+        }
+    }
+    
+    namespace transaction{
+        class Transaction{
+            - amount : double
+            - sender : Account
+            - receiver : Account
+            - transactionType : TransactionType
+            - transactionDate : LocalDateTime
+
+            + deposit(amount : double, account : Account)
+            + withdraw(amount : double, account : Account)
+            + transfer(amount : double, sender : Account, receiver : Account)
+        }
+        class Withdraw{
+            <<interface>>
+            + withdraw : double
+        }
+        class Deposit{
+            <<interface>>
+            + deposit : double
+        }
+        class Transfer{
+            <<interface>>
+            + transfer : double
+        }
+        class Limit{
+            <<interface>>
+        }
+        class TransactionType{
+            <<enum>>
+            - WITHDRAW
+            - DEPOSIT
+            - TRANSFER
+            - LIMIT
         }
     }
 
