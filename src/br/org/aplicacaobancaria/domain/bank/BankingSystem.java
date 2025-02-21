@@ -1,5 +1,6 @@
 package br.org.aplicacaobancaria.domain.bank;
 
+import br.org.aplicacaobancaria.domain.services.transaction.Transaction;
 import br.org.aplicacaobancaria.domain.user.Client;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ public class BankingSystem {
 
     Set<Client> clients = new HashSet<>();
     List<Account> accounts = new ArrayList<>();
+    Transaction transaction = new Transaction();
 
     public BankingSystem(){
 
@@ -40,5 +42,13 @@ public class BankingSystem {
             }
         }
         return null;
+    }
+
+    public void depositTransaction(double amount, Account account){
+        account.setBalance(transaction.deposit(amount, account));
+    }
+
+    public void withdrawTransaction(double amount, Account account){
+        account.setBalance(transaction.withdraw(amount, account));
     }
 }

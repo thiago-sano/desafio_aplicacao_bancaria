@@ -124,6 +124,34 @@ public class UI {
         System.out.print("CPF/CNPJ: ");
         return sc.next();
     }
+
+    public static int printAccountMenu(Account account){
+        int option;
+
+        System.out.println();
+        System.out.printf("Olá, %s. Saldo atual: %,.2f\n", account.getClient().getName(), account.getBalance());
+        System.out.println("1 - SAQUE");
+        System.out.println("2 - DEPOSITO");
+        System.out.println("3 - TRANSFERENCIA");
+        System.out.println("4 - SAIR");
+        System.out.print("Digite uma opcao: ");
+        option = readMenuOption();
+        System.out.println();
+        return option;
+    }
+
+    public static Double printDepositTransaction(){
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Valor a ser depositado: ");
+        return sc.nextDouble();
+    }
+
+    public static Double printWithdrawTransaction(){
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Valor a ser sacado: ");
+        return sc.nextDouble();
+    }
+
     public static int readMenuOption(){
         Scanner sc = new Scanner(System.in);
         return sc.nextInt();
