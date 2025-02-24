@@ -6,6 +6,8 @@ import br.org.aplicacaobancaria.domain.user.Business;
 import br.org.aplicacaobancaria.domain.user.Client;
 import br.org.aplicacaobancaria.domain.user.Personal;
 
+import java.util.List;
+
 import static java.lang.System.exit;
 
 public class Program {
@@ -73,12 +75,13 @@ public class Program {
                 }
                 case 5:{
                     // "LOGAR" EM CONTA ESPECIFICA
+                    option = 0;
                     System.out.println("\nMENU PRINCIPAL / ENTRAR EM CONTA");
                     System.out.println("-> LOGIN\n");
                     String userId = UI.printLoginAccount();
                     Account account = bankingSystem.findAccountByUserId(bankingSystem.listAccounts(), userId);
                     if(account != null){
-                        while(option !=4){
+                        while(option !=5){
                             option = UI.printAccountMenu(account);
                             switch (option){
                                 case 1:{
@@ -99,6 +102,15 @@ public class Program {
                                     break;
                                 }
                                 case 4:{
+                                    //extrato
+//                                    for (Transaction transaction : bankingSystem.listTransactions()){
+                                    List<Transaction> transactionsByAccount = bankingSystem.filterTransactionsList(bankingSystem.listTransactions(), account);
+                                    for(Transaction transactionByAccount : transactionsByAccount){
+                                        System.out.println(transactionByAccount);
+                                    }
+                                    break;
+                                }
+                                case 5:{
                                     System.out.println("DESLOGADO COM SUCESSO\n");
                                     break;
                                 }

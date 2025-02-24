@@ -29,6 +29,12 @@ public class Transaction implements Deposit, Transfer, Withdraw {
         this.receiver = receiver;
     }
 
+    public Transaction(double amount, Account receiver, TransactionType transactionType) {
+        this.amount = amount;
+        this.receiver = receiver;
+        this.transactionType = transactionType;
+    }
+
     public String getReceiverId() {
         return receiverId;
     }
@@ -158,5 +164,10 @@ public class Transaction implements Deposit, Transfer, Withdraw {
                 }
             }
         }
+    }
+
+    @Override
+    public String toString() {
+            return String.format("Tipo: %s | Valor: %,.2f", getTransactionType().getName(), getAmount());
     }
 }

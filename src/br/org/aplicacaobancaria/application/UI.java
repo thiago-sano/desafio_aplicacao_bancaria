@@ -134,7 +134,8 @@ public class UI {
         System.out.println("1 - SAQUE");
         System.out.println("2 - DEPOSITO");
         System.out.println("3 - TRANSFERENCIA");
-        System.out.println("4 - SAIR");
+        System.out.println("4 - EXTRATO");
+        System.out.println("5 - SAIR");
         System.out.print("Digite uma opcao: ");
         option = readMenuOption();
         System.out.println();
