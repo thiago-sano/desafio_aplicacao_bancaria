@@ -87,7 +87,6 @@ classDiagram
         }
         class CheckingAccount{
             - limit : Double
-            - availableLimit : Double
         }
         class PayrollAccount{
 
@@ -100,13 +99,13 @@ classDiagram
         }
         class BankingSystem{
             + registerClient(client : Client) Client
-            + listClients() void
+            + listClients() Set
             + registerAccount(account : Account) void
-            + listAccounts() void
-            + findAccountByUserId(accounts : List<Account>, userId : String)
-            + depositTransaction(amount : double, account : Account)
-            + withdrawTransaction(amount : double, account : Account)
-            + transferTransaction(transaction : Transaction, sender : Account)
+            + listAccounts() List
+            + findAccountByUserId(accounts : List<Account>, userId : String) Account
+            + depositTransaction(amount : double, account : Account) void
+            + withdrawTransaction(amount : double, account : Account) void
+            + transferTransaction(transaction : Transaction, sender : Account) void
         }
     }
     
@@ -117,11 +116,12 @@ classDiagram
             - receiver : Account
             - receiverId : String
             - transactionType : TransactionType
-            - transactionDate : LocalDateTime
 
-            + deposit(amount : double, account : Account)
-            + withdraw(amount : double, account : Account)
-            + transfer(amount : double, sender : Account, receiver : Account)
+            + isWithinTimeRestriction () boolean
+            + isBalancePreviewOk(amount : double, account : Account) boolean
+            + deposit(amount : double, account : Account) void
+            + withdraw(amount : double, account : Account) void
+            + transfer(amount : double, sender : Account, receiver : Account) void
         }
         class Withdraw{
             <<interface>>

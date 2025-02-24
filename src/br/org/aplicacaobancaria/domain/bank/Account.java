@@ -8,17 +8,27 @@ public abstract class Account {
     private Double balance;
     private AccountType accountType;
     private Client client;
+    private Double limit;
 
     public Account(String branchNumber, String accountNumber, Client client) {
         this.branchNumber = branchNumber;
         this.accountNumber = accountNumber;
-        this.balance = balance = 0.0;
+        this.balance = 0.0;
         this.client = client;
+        this.limit = 100.0;
     }
 
     public Account(String branchNumber, String accountNumber) {
         this.branchNumber = branchNumber;
         this.accountNumber = accountNumber;
+    }
+
+    public Double getLimit() {
+        return limit;
+    }
+
+    public void setLimit(Double limit) {
+        this.limit = limit;
     }
 
     public Client getClient() {

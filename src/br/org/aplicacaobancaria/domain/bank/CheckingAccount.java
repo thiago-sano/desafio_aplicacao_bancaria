@@ -4,13 +4,11 @@ import br.org.aplicacaobancaria.domain.user.Client;
 
 public class CheckingAccount extends Account{
     private Double limit;
-    private Double availableLimit;
     private final AccountType accountType;
 
     public CheckingAccount(String branchNumber, String accountNumber, Client client) {
         super(branchNumber, accountNumber, client);
-        this.availableLimit = 100.0;
-        this.limit = availableLimit;
+        this.limit = 100.0;
         this.accountType = AccountType.CHECKING;
     }
 
@@ -20,14 +18,6 @@ public class CheckingAccount extends Account{
 
     public void setLimit(Double limit) {
         this.limit = limit;
-    }
-
-    public Double getAvailableLimit() {
-        return availableLimit;
-    }
-
-    public void setAvailableLimit(Double availableLimit) {
-        this.availableLimit = availableLimit;
     }
 
     @Override

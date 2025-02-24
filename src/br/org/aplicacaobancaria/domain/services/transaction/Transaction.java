@@ -5,7 +5,6 @@ import br.org.aplicacaobancaria.domain.bank.AccountType;
 import br.org.aplicacaobancaria.domain.user.ClientType;
 
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 public class Transaction implements Deposit, Transfer, Withdraw {
     private double amount;
@@ -70,16 +69,33 @@ public class Transaction implements Deposit, Transfer, Withdraw {
         this.transactionType = transactionType;
     }
 
-    public boolean timeRestriction(LocalTime now, double amount) {
-        LocalTime beginTime = LocalTime.parse("10:00:00", DateTimeFormatter.ofPattern("HH:mm:ss"));
-        LocalTime endTime = LocalTime.parse("13:00:00", DateTimeFormatter.ofPattern("HH:mm:ss"));
+    public boolean isWithinTimeRestriction() {
+        LocalTime startTime = LocalTime.of(9, 0);
+        LocalTime endTime = LocalTime.of(6, 0);
+        LocalTime now = LocalTime.now();
 
-        if (beginTime.isBefore(now) & endTime.isAfter(now) & (amount > 1000.0)) {
-            System.out.printf("Limite reduzido a R$1.000,00 entre %tT:%tM e %tT:%tM", beginTime, beginTime, endTime, endTime);
-            return false;
+        if (startTime.isBefore(endTime)) {
+            // Horário de início e de encerramento no mesmo dia
+            return !now.isBefore(startTime) && !now.isAfter(endTime);
         } else {
-            System.out.println("SEM RESTRIÇÃO DE HORÁRIO");
+            // Horário de início e de encerramento em dias diferentes
+            return !now.isBefore(startTime) || !now.isAfter(endTime);
+        }
+    }
+
+    public boolean isBalancePreviewOk(double amount, Account account){
+
+        double balancePreview = account.getBalance() - amount;
+        if (balancePreview > 0){
             return true;
+        }
+
+        else if ((balancePreview >= -account.getLimit()) & (account.getAccountType() == AccountType.CHECKING)){
+            return true;
+        }
+        else{
+            System.out.println("CONTA SEM LIMITE DISPONÍVEL");
+            return false;
         }
     }
 
@@ -94,21 +110,52 @@ public class Transaction implements Deposit, Transfer, Withdraw {
 
     @Override
     public void withdraw(double amount, Account account) {
-        if (timeRestriction(LocalTime.now(), amount)) {
-            account.setBalance(account.getBalance() - amount);
+        //if (!hasTimeRestriction(LocalTime.now(), amount)) {
+        if (isWithinTimeRestriction()) {
+            if (amount <= 1000){
+                if (isBalancePreviewOk(amount, account)){
+                    account.setBalance(account.getBalance() - amount);
+                }
+            }
+            else {
+                System.out.println("DENTRO DA RESTRICAO DE HORARIO. MOVIMENTACOES LIMITADAS A R$ 1.000,00");
+            }
+        }
+        else {
+            System.out.println("FORA DA RESTRICAO DE HORARIO");
+            if (isBalancePreviewOk(amount, account)){
+                account.setBalance(account.getBalance() - amount);
+            }
         }
     }
 
     @Override
     public void transfer(double amount, Account sender, Account receiver) {
-        if (timeRestriction(LocalTime.now(), amount)) {
-            if (receiver.getAccountType() == AccountType.PAYROLL & sender.getClient().getClientType() != ClientType.BUSINESS) {
-                System.out.println("CONTA SALÁRIO PODE RECEBER APENAS DE CLIENTES PJ");
-            } else if (sender.getAccountType() == AccountType.PAYROLL & !receiver.getClient().getId().equals(sender.getClient().getId())) {
-                System.out.println("CONTA SALÁRIO TRANSFERE APENAS PARA MESMA TITULARIDADE");
-            } else {
-                sender.setBalance(sender.getBalance() - amount);
-                receiver.setBalance(receiver.getBalance() + amount);
+
+        if (receiver.getAccountType() == AccountType.PAYROLL & sender.getClient().getClientType() != ClientType.BUSINESS) {
+            System.out.println("CONTA SALÁRIO PODE RECEBER APENAS DE CLIENTES PJ");
+        }
+        else if (sender.getAccountType() == AccountType.PAYROLL & !receiver.getClient().getId().equals(sender.getClient().getId())) {
+            System.out.println("CONTA SALÁRIO TRANSFERE APENAS PARA MESMA TITULARIDADE");
+        }
+        else {
+            if (isWithinTimeRestriction()) {
+                if (amount <= 1000){
+                    if (isBalancePreviewOk(amount, sender)) {
+                        sender.setBalance(sender.getBalance() - amount);
+                        receiver.setBalance(receiver.getBalance() + amount);
+                    }
+                }
+                else {
+                    System.out.println("DENTRO DA RESTRICAO DE HORARIO. MOVIMENTACOES LIMITADAS A R$ 1.000,00");
+                }
+            }
+            else {
+                System.out.println("FORA DA RESTRICAO DE HORARIO");
+                if (isBalancePreviewOk(amount, sender)) {
+                    sender.setBalance(sender.getBalance() - amount);
+                    receiver.setBalance(receiver.getBalance() + amount);
+                }
             }
         }
     }
