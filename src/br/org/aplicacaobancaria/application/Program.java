@@ -79,32 +79,32 @@ public class Program {
                     option = 0;
                     System.out.println("\nMENU PRINCIPAL / ENTRAR EM CONTA");
                     System.out.println("-> LOGIN\n");
-                    String userId = UI.printLoginAccount();
+                    String userId = UI.printIdScanner();
                     Account account = bankingSystem.findAccountByUserId(bankingSystem.listAccounts(), userId);
                     if(account != null){
                         while(option !=5){
                             option = UI.printAccountMenu(account);
                             switch (option){
                                 case 1:{
-                                    double amount = UI.printWithdrawTransaction();
+                                    double amount = UI.printAmount();
                                     bankingSystem.withdrawTransaction(amount, account, TransactionType.WITHDRAW);
                                     break;
                                 }
                                 case 2:{
-                                    double amount = UI.printDepositTransaction();
+                                    double amount = UI.printAmount();
                                     bankingSystem.depositTransaction(amount, account, TransactionType.DEPOSIT);
                                     break;
                                 }
                                 case 3:{
                                     // transferencia
-                                    Transaction transaction = UI.printTransferTransaction();
-                                    // retornado um Obj Transaction com amount e receiverId
-                                    bankingSystem.transferTransaction(transaction, account, TransactionType.TRANSFER);
+                                    String userIdReceiver = UI.printIdScanner();
+                                    double amount = UI.printAmount();
+                                    Account accountReceiver = bankingSystem.findAccountByUserId(bankingSystem.listAccounts(), userIdReceiver);
+                                    bankingSystem.transferTransaction(amount, account, accountReceiver, TransactionType.TRANSFER);
                                     break;
                                 }
                                 case 4:{
                                     //extrato
-//                                    for (Transaction transaction : bankingSystem.listTransactions()){
                                     List<Transaction> transactionsByAccount = bankingSystem.filterTransactionsList(bankingSystem.listTransactions(), account);
                                     for(Transaction transactionByAccount : transactionsByAccount){
                                         System.out.println(transactionByAccount);

@@ -108,7 +108,7 @@ classDiagram
             + findAccountByUserId(accounts : List<Account>, userId : String) Account
             + depositTransaction(amount : double, account : Account, transactionType : TransactionType) void
             + withdrawTransaction(amount : double, account : Account, transactionType : TransactionType) void
-            + transferTransaction(transaction : Transaction, sender : Account, transactionType : TransactionType) void
+            + transferTransaction(amount: double, sender : Account, receiver : Account, transactionType : TransactionType) void
         }
     }
     

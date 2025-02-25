@@ -75,13 +75,10 @@ public class BankingSystem {
         recordTransaction(transactionRecord);
     }
 
-    public void transferTransaction(Transaction transactionGenerated, Account sender, TransactionType transactionType){
-        // com receiverId, retornar receiverAccount
-        Account receiver = findAccountByUserId(listAccounts(), transactionGenerated.getReceiverId());
-        transaction.transfer(transactionGenerated.getAmount(), sender, receiver, transactionType);
-
-        Transaction transactionRecordSender = new Transaction(-transactionGenerated.getAmount(), sender, transactionType);
-        Transaction transactionRecordReceiver = new Transaction(transactionGenerated.getAmount(), receiver, transactionType);
+    public void transferTransaction(double amount, Account sender, Account receiver, TransactionType transactionType){
+        transaction.transfer(amount, sender, receiver, transactionType);
+        Transaction transactionRecordSender = new Transaction(-amount, sender, transactionType);
+        Transaction transactionRecordReceiver = new Transaction(amount, receiver, transactionType);
         recordTransaction(transactionRecordSender);
         recordTransaction(transactionRecordReceiver);
     }

@@ -23,12 +23,6 @@ public class Transaction implements Deposit, Transfer, Withdraw {
         this.receiverId = receiverId;
     }
 
-    public Transaction(double amount, Account sender, Account receiver) {
-        this.amount = amount;
-        this.sender = sender;
-        this.receiver = receiver;
-    }
-
     public Transaction(double amount, Account account, TransactionType transactionType) {
         this.amount = amount;
         this.account = account;

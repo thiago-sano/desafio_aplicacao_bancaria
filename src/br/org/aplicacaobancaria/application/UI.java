@@ -119,9 +119,8 @@ public class UI {
         }
     }
 
-    public static String printLoginAccount(){
+    public static String printIdScanner(){
         Scanner sc = new Scanner(System.in);
-
         System.out.print("CPF/CNPJ: ");
         return sc.next();
     }
@@ -142,27 +141,10 @@ public class UI {
         return option;
     }
 
-    public static Double printDepositTransaction(){
+    public static Double printAmount(){
         Scanner sc = new Scanner(System.in);
-        System.out.print("Valor a ser depositado: ");
+        System.out.print("Valor: ");
         return sc.nextDouble();
-    }
-
-    public static Double printWithdrawTransaction(){
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Valor a ser sacado: ");
-        return sc.nextDouble();
-    }
-
-    public static Transaction printTransferTransaction(){
-        Scanner sc = new Scanner(System.in);
-
-        System.out.print("CPF/CNPJ de destino: ");
-        String receiverId = sc.next();
-        System.out.print("Valor a ser transferido: ");
-        double amount = sc.nextDouble();
-
-        return new Transaction(amount, receiverId);
     }
 
     public static int readMenuOption(){
