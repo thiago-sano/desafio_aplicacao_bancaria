@@ -10,9 +10,9 @@ public class Transaction implements Deposit, Transfer, Withdraw {
     private double amount;
     private Account sender;
     private Account receiver;
+    private Account account;
     private String receiverId;
     private TransactionType transactionType;
-
 
     public Transaction() {
 
@@ -29,9 +29,9 @@ public class Transaction implements Deposit, Transfer, Withdraw {
         this.receiver = receiver;
     }
 
-    public Transaction(double amount, Account receiver, TransactionType transactionType) {
+    public Transaction(double amount, Account account, TransactionType transactionType) {
         this.amount = amount;
-        this.receiver = receiver;
+        this.account = account;
         this.transactionType = transactionType;
     }
 
@@ -67,6 +67,14 @@ public class Transaction implements Deposit, Transfer, Withdraw {
         this.receiver = receiver;
     }
 
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
     public TransactionType getTransactionType() {
         return transactionType;
     }
@@ -76,7 +84,7 @@ public class Transaction implements Deposit, Transfer, Withdraw {
     }
 
     public boolean isWithinTimeRestriction() {
-        LocalTime startTime = LocalTime.of(9, 0);
+        LocalTime startTime = LocalTime.of(19, 0);
         LocalTime endTime = LocalTime.of(6, 0);
         LocalTime now = LocalTime.now();
 
@@ -92,7 +100,7 @@ public class Transaction implements Deposit, Transfer, Withdraw {
     public boolean isBalancePreviewOk(double amount, Account account){
 
         double balancePreview = account.getBalance() - amount;
-        if (balancePreview > 0){
+        if (balancePreview >= 0){
             return true;
         }
 
@@ -106,7 +114,7 @@ public class Transaction implements Deposit, Transfer, Withdraw {
     }
 
     @Override
-    public void deposit(double amount, Account account) {
+    public void deposit(double amount, Account account, TransactionType transactionType) {
         if (account.getAccountType() == AccountType.PAYROLL) {
             System.out.println("TRANSACÃO NÃO PERMITIDA PARA CONTA SALÁRIO");
         } else {
@@ -115,8 +123,7 @@ public class Transaction implements Deposit, Transfer, Withdraw {
     }
 
     @Override
-    public void withdraw(double amount, Account account) {
-        //if (!hasTimeRestriction(LocalTime.now(), amount)) {
+    public void withdraw(double amount, Account account, TransactionType transactionType) {
         if (isWithinTimeRestriction()) {
             if (amount <= 1000){
                 if (isBalancePreviewOk(amount, account)){
@@ -136,7 +143,7 @@ public class Transaction implements Deposit, Transfer, Withdraw {
     }
 
     @Override
-    public void transfer(double amount, Account sender, Account receiver) {
+    public void transfer(double amount, Account sender, Account receiver, TransactionType transactionType) {
 
         if (receiver.getAccountType() == AccountType.PAYROLL & sender.getClient().getClientType() != ClientType.BUSINESS) {
             System.out.println("CONTA SALÁRIO PODE RECEBER APENAS DE CLIENTES PJ");

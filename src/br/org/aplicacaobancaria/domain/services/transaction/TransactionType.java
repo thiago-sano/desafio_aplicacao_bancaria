@@ -3,8 +3,7 @@ package br.org.aplicacaobancaria.domain.services.transaction;
 public enum TransactionType {
     WITHDRAW (1, "SAQUE"),
     DEPOSIT (2, "DEPOSITO"),
-    TRANSFER (3, "TRANSFERENCIA"),
-    LIMIT (4, "LIMITE");
+    TRANSFER (3, "TRANSFERENCIA");
 
     private int id;
     private String name;

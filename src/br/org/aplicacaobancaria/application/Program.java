@@ -2,6 +2,7 @@ package br.org.aplicacaobancaria.application;
 
 import br.org.aplicacaobancaria.domain.bank.*;
 import br.org.aplicacaobancaria.domain.services.transaction.Transaction;
+import br.org.aplicacaobancaria.domain.services.transaction.TransactionType;
 import br.org.aplicacaobancaria.domain.user.Business;
 import br.org.aplicacaobancaria.domain.user.Client;
 import br.org.aplicacaobancaria.domain.user.Personal;
@@ -86,19 +87,19 @@ public class Program {
                             switch (option){
                                 case 1:{
                                     double amount = UI.printWithdrawTransaction();
-                                    bankingSystem.withdrawTransaction(amount, account);
+                                    bankingSystem.withdrawTransaction(amount, account, TransactionType.WITHDRAW);
                                     break;
                                 }
                                 case 2:{
                                     double amount = UI.printDepositTransaction();
-                                    bankingSystem.depositTransaction(amount, account);
+                                    bankingSystem.depositTransaction(amount, account, TransactionType.DEPOSIT);
                                     break;
                                 }
                                 case 3:{
                                     // transferencia
                                     Transaction transaction = UI.printTransferTransaction();
                                     // retornado um Obj Transaction com amount e receiverId
-                                    bankingSystem.transferTransaction(transaction, account);
+                                    bankingSystem.transferTransaction(transaction, account, TransactionType.TRANSFER);
                                     break;
                                 }
                                 case 4:{

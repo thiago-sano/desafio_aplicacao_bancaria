@@ -39,7 +39,7 @@ public class BankingSystem {
         return accounts;
     }
 
-    public void registerTransaction (Transaction transaction){
+    public void recordTransaction (Transaction transaction){
         transactions.add(transaction);
     }
 
@@ -48,8 +48,9 @@ public class BankingSystem {
     }
 
     public List<Transaction> filterTransactionsList(List<Transaction> transactions, Account account){
+        // Comparar  clientId da lista com clientId da account "logada"
         return transactions.stream()
-                .filter(transaction -> account.getClient().getId().equals(account.getClient().getId()))
+                .filter(transaction -> transaction.getAccount().getClient().getId().equals(account.getClient().getId()))
                 .collect(Collectors.toList());
     }
 
@@ -62,19 +63,26 @@ public class BankingSystem {
         return null;
     }
 
-    public void depositTransaction(double amount, Account account){
-        Transaction transaction1 = new Transaction(amount, account, TransactionType.DEPOSIT);
-        transaction1.deposit(amount, account);
-        registerTransaction(transaction1);
+    public void depositTransaction(double amount, Account account, TransactionType transactionType){
+        transaction.deposit(amount, account, transactionType);
+        Transaction transactionRecord = new Transaction(amount, account, transactionType);
+        recordTransaction(transactionRecord);
     }
 
-    public void withdrawTransaction(double amount, Account account){
-        transaction.withdraw(amount, account);
+    public void withdrawTransaction(double amount, Account account, TransactionType transactionType){
+        transaction.withdraw(amount, account, transactionType);
+        Transaction transactionRecord = new Transaction(amount, account, transactionType);
+        recordTransaction(transactionRecord);
     }
 
-    public void transferTransaction(Transaction transaction, Account sender){
+    public void transferTransaction(Transaction transactionGenerated, Account sender, TransactionType transactionType){
         // com receiverId, retornar receiverAccount
-        Account receiver = findAccountByUserId(listAccounts(), transaction.getReceiverId());
-        transaction.transfer(transaction.getAmount(), sender, receiver);
+        Account receiver = findAccountByUserId(listAccounts(), transactionGenerated.getReceiverId());
+        transaction.transfer(transactionGenerated.getAmount(), sender, receiver, transactionType);
+
+        Transaction transactionRecordSender = new Transaction(-transactionGenerated.getAmount(), sender, transactionType);
+        Transaction transactionRecordReceiver = new Transaction(transactionGenerated.getAmount(), receiver, transactionType);
+        recordTransaction(transactionRecordSender);
+        recordTransaction(transactionRecordReceiver);
     }
 }

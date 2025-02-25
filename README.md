@@ -102,10 +102,13 @@ classDiagram
             + listClients() Set
             + registerAccount(account : Account) void
             + listAccounts() List
+            + recordTransaction (transaction : Transactio) void
+            + listTransactions() List
+            + filterTransactionsList(transactions : List, account : Account) List
             + findAccountByUserId(accounts : List<Account>, userId : String) Account
-            + depositTransaction(amount : double, account : Account) void
-            + withdrawTransaction(amount : double, account : Account) void
-            + transferTransaction(transaction : Transaction, sender : Account) void
+            + depositTransaction(amount : double, account : Account, transactionType : TransactionType) void
+            + withdrawTransaction(amount : double, account : Account, transactionType : TransactionType) void
+            + transferTransaction(transaction : Transaction, sender : Account, transactionType : TransactionType) void
         }
     }
     
@@ -114,14 +117,15 @@ classDiagram
             - amount : double
             - sender : Account
             - receiver : Account
+            - account : Account
             - receiverId : String
             - transactionType : TransactionType
 
             + isWithinTimeRestriction () boolean
             + isBalancePreviewOk(amount : double, account : Account) boolean
-            + deposit(amount : double, account : Account) void
-            + withdraw(amount : double, account : Account) void
-            + transfer(amount : double, sender : Account, receiver : Account) void
+            + deposit(amount : double, account : Account, transactionType : TransactionType) void
+            + withdraw(amount : double, account : Account, transactionType : TransactionType) void
+            + transfer(amount : double, sender : Account, receiver : Account, transactionType : TransactionType) void
         }
         class Withdraw{
             <<interface>>
@@ -135,15 +139,11 @@ classDiagram
             <<interface>>
             + transfer : void
         }
-        class Limit{
-            <<interface>>
-        }
         class TransactionType{
             <<enum>>
             - WITHDRAW
             - DEPOSIT
             - TRANSFER
-            - LIMIT
         }
     }
 
