@@ -50,7 +50,6 @@ classDiagram
     Transaction --|> Withdraw
     Transaction --|> Deposit
     Transaction --|> Transfer
-    Transaction --|> Limit
     
     namespace user{
         class Client{
@@ -106,8 +105,10 @@ classDiagram
             + listTransactions() List
             + filterTransactionsList(transactions : List, account : Account) List
             + findAccountByUserId(accounts : List<Account>, userId : String) Account
-            + depositTransaction(amount : double, account : Account, transactionType : TransactionType) void
+            + dateTimeNow() String
+            + transactionStatement(transactions : List, account : Accont) void
             + withdrawTransaction(amount : double, account : Account, transactionType : TransactionType) void
+            + depositTransaction(amount : double, account : Account, transactionType : TransactionType) void
             + transferTransaction(amount: double, sender : Account, receiver : Account, transactionType : TransactionType) void
         }
     }
@@ -115,17 +116,19 @@ classDiagram
     namespace transaction{
         class Transaction{
             - amount : double
+            - account : Account
             - sender : Account
             - receiver : Account
-            - account : Account
             - receiverId : String
             - transactionType : TransactionType
+            - dateTimeNow : String
 
             + isWithinTimeRestriction () boolean
             + isBalancePreviewOk(amount : double, account : Account) boolean
-            + deposit(amount : double, account : Account, transactionType : TransactionType) void
-            + withdraw(amount : double, account : Account, transactionType : TransactionType) void
-            + transfer(amount : double, sender : Account, receiver : Account, transactionType : TransactionType) void
+            + isTransactionOk(transaction : Transaction) boolen
+            + deposit(amount : double, account : Account, transactionType : TransactionType, localDateTime : String) void
+            + withdraw(amount : double, account : Account, transactionType : TransactionType, localDateTime : String) void
+            + transfer(amount : double, sender : Account, receiver : Account, transactionType : TransactionType, localDateTime : String) void
         }
         class Withdraw{
             <<interface>>

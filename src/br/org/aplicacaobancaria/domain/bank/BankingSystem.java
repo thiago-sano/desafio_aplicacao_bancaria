@@ -4,10 +4,12 @@ import br.org.aplicacaobancaria.domain.services.transaction.Transaction;
 import br.org.aplicacaobancaria.domain.services.transaction.TransactionType;
 import br.org.aplicacaobancaria.domain.user.Client;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class BankingSystem {
@@ -63,23 +65,63 @@ public class BankingSystem {
         return null;
     }
 
-    public void depositTransaction(double amount, Account account, TransactionType transactionType){
-        transaction.deposit(amount, account, transactionType);
-        Transaction transactionRecord = new Transaction(amount, account, transactionType);
-        recordTransaction(transactionRecord);
+    public String dateTimeNow(){
+        LocalDateTime ldt = LocalDateTime.now();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        return ldt.format(dtf);
+    }
+
+    public void transactionsStatement(List<Transaction> transactions, Account account) throws IOException {
+        List<Transaction> filteredTransactions = filterTransactionsList(transactions, account);
+        Path path = Paths.get("..\\desafio_aplicacao_bancaria\\file");
+        Path destinationFile = Paths.get("..\\desafio_aplicacao_bancaria\\file\\transaction-statement_"+account.getClient().getId()+".csv");
+        try{
+            StringBuilder strBuilder = new StringBuilder();
+            strBuilder.append("DATA/HORA;TIPO TRANSACAO;VALOR");
+            strBuilder.append(System.lineSeparator());
+            for (Transaction transaction : filteredTransactions){
+                strBuilder.append(transaction.getDateTimeNow() + ";");
+                strBuilder.append(transaction.getTransactionType().getName() + ";");
+                strBuilder.append(String.format("%,.2f", transaction.getAmount()));
+                strBuilder.append(System.lineSeparator());
+            }
+            System.out.println(strBuilder.toString());
+            try{
+                Files.write(destinationFile, strBuilder.toString().getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE);
+            } catch(NoSuchFileException e){
+                Files.createDirectory(path);
+                Files.write(destinationFile, strBuilder.toString().getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void withdrawTransaction(double amount, Account account, TransactionType transactionType){
-        transaction.withdraw(amount, account, transactionType);
-        Transaction transactionRecord = new Transaction(amount, account, transactionType);
-        recordTransaction(transactionRecord);
+        Transaction withdrawTransaction = new Transaction(amount, account, transactionType, dateTimeNow());
+        if (transaction.isTransactionOk(withdrawTransaction)){
+            transaction.withdraw(withdrawTransaction.getAmount(), withdrawTransaction.getAccount(), withdrawTransaction.getTransactionType(), withdrawTransaction.getDateTimeNow());
+            Transaction transactionRecord = new Transaction(-withdrawTransaction.getAmount(), withdrawTransaction.getAccount(), withdrawTransaction.getTransactionType(), withdrawTransaction.getDateTimeNow());
+            recordTransaction(transactionRecord);
+        }
+    }
+
+    public void depositTransaction(double amount, Account account, TransactionType transactionType){
+        Transaction depositTransaction = new Transaction(amount, account, transactionType, dateTimeNow());
+        if (transaction.isTransactionOk(depositTransaction)){
+            transaction.deposit(depositTransaction.getAmount(), depositTransaction.getAccount(), depositTransaction.getTransactionType(), depositTransaction.getDateTimeNow());
+            recordTransaction(depositTransaction);
+        }
     }
 
     public void transferTransaction(double amount, Account sender, Account receiver, TransactionType transactionType){
-        transaction.transfer(amount, sender, receiver, transactionType);
-        Transaction transactionRecordSender = new Transaction(-amount, sender, transactionType);
-        Transaction transactionRecordReceiver = new Transaction(amount, receiver, transactionType);
-        recordTransaction(transactionRecordSender);
-        recordTransaction(transactionRecordReceiver);
+        Transaction transferTransaction = new Transaction(amount, sender, receiver, transactionType, dateTimeNow());
+        if (transaction.isTransactionOk(transferTransaction)){
+            transaction.transfer(transferTransaction.getAmount(), transferTransaction.getSender(), transferTransaction.getReceiver(), transferTransaction.getTransactionType(), transferTransaction.getDateTimeNow());
+            Transaction transactionRecordSender = new Transaction(-transferTransaction.getAmount(), transferTransaction.getSender(), transferTransaction.getTransactionType(), transferTransaction.getDateTimeNow());
+            Transaction transactionRecordReceiver = new Transaction(transferTransaction.getAmount(), transferTransaction.getReceiver(), transferTransaction.getTransactionType(), transferTransaction.getDateTimeNow());
+            recordTransaction(transactionRecordSender);
+            recordTransaction(transactionRecordReceiver);
+        }
     }
 }

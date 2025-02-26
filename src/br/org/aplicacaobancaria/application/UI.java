@@ -33,7 +33,7 @@ public class UI {
         Scanner sc = new Scanner(System.in);
 
         System.out.print("NOME DO CLIENTE: ");
-        String clientName = sc.next();
+        String clientName = sc.nextLine();
         System.out.print("EMAIL DO CLIENTE: ");
         String clientEmail = sc.next();
 

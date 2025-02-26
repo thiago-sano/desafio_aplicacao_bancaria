@@ -7,12 +7,13 @@ import br.org.aplicacaobancaria.domain.user.Business;
 import br.org.aplicacaobancaria.domain.user.Client;
 import br.org.aplicacaobancaria.domain.user.Personal;
 
+import java.io.IOException;
 import java.util.List;
 
 import static java.lang.System.exit;
 
 public class Program {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         BankingSystem bankingSystem = new BankingSystem();
         // Cadastro hardcode
@@ -99,16 +100,13 @@ public class Program {
                                     // transferencia
                                     String userIdReceiver = UI.printIdScanner();
                                     double amount = UI.printAmount();
-                                    Account accountReceiver = bankingSystem.findAccountByUserId(bankingSystem.listAccounts(), userIdReceiver);
-                                    bankingSystem.transferTransaction(amount, account, accountReceiver, TransactionType.TRANSFER);
+                                    bankingSystem.transferTransaction(amount, account, bankingSystem.findAccountByUserId(bankingSystem.listAccounts(), userIdReceiver), TransactionType.TRANSFER);
                                     break;
                                 }
                                 case 4:{
                                     //extrato
-                                    List<Transaction> transactionsByAccount = bankingSystem.filterTransactionsList(bankingSystem.listTransactions(), account);
-                                    for(Transaction transactionByAccount : transactionsByAccount){
-                                        System.out.println(transactionByAccount);
-                                    }
+                                    //List<Transaction> transactionsByAccount = bankingSystem.filterTransactionsList(bankingSystem.listTransactions(), account);
+                                    bankingSystem.transactionsStatement(bankingSystem.listTransactions(), account);
                                     break;
                                 }
                                 case 5:{
