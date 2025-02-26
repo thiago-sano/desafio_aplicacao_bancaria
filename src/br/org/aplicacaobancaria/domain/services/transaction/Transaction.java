@@ -144,7 +144,11 @@ public class Transaction implements Deposit, Transfer, Withdraw {
                 } else if (transaction.getSender().getAccountType() == AccountType.PAYROLL & !transaction.getReceiver().getClient().getId().equals(transaction.getSender().getClient().getId())) {
                     System.out.println("CONTA SALÁRIO TRANSFERE APENAS PARA MESMA TITULARIDADE");
                     return false;
-                } else {
+                } else if (transaction.getSender().getClient().getId().equals(transaction.getReceiver().getClient().getId())){
+                    System.out.println("CONTA DE ORIGEM E DESTINO SAO IGUAIS");
+                    return false;
+                }
+                else {
                     if (isWithinTimeRestriction()){
                         if (transaction.getAmount() <= 1000){
                             if (isBalancePreviewOk(transaction.getAmount(), transaction.getSender())){
