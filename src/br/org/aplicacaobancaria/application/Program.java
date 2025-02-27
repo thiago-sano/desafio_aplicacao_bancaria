@@ -1,7 +1,6 @@
 package br.org.aplicacaobancaria.application;
 
 import br.org.aplicacaobancaria.domain.bank.*;
-import br.org.aplicacaobancaria.domain.services.transaction.Transaction;
 import br.org.aplicacaobancaria.domain.services.transaction.TransactionType;
 import br.org.aplicacaobancaria.domain.user.Business;
 import br.org.aplicacaobancaria.domain.user.Client;
@@ -9,7 +8,6 @@ import br.org.aplicacaobancaria.domain.user.Personal;
 
 import java.io.IOException;
 import java.util.InputMismatchException;
-import java.util.List;
 
 import static java.lang.System.exit;
 
@@ -44,43 +42,23 @@ public class Program {
                 option = UI.printMainMenu();
                 switch (option){
                     case 1:{
-                        System.out.println("\nMENU PRINCIPAL / CADASTRO DE CLIENTE");
-                        System.out.println("-> CADASTRO DE CLIENTE\n");
-                        bankingSystem.registerClient(UI.printRegisterClient());
-                        System.out.println();
-                        break;
-                    }
-                    case 2:{
-                        System.out.println("\nMENU PRINCIPAL / LISTAR CLIENTES");
-                        System.out.println("-> LISTAR CLIENTES\n");
-                        for (Client client : bankingSystem.listClients()){
-                            System.out.println(client);
-                        }
-                        System.out.println();
-                        break;
-                    }
-                    case 3:{
                         System.out.println("\nMENU PRINCIPAL / CADASTRO DE CONTA");
-                        System.out.println("-> CADASTRO DE CONTA\n");
                         Client client = UI.printRegisterClient();
                         bankingSystem.registerClient(client);
                         Account account = UI.printRegisterAccount(client);
                         bankingSystem.registerAccount(account);
                         break;
                     }
-                    case 4:{
+                    case 2:{
                         System.out.println("\nMENU PRINCIPAL / LISTAR CONTAS");
-                        System.out.println("-> LISTAR CONTAS\n");
                         for (Account account : bankingSystem.listAccounts()){
                             System.out.println(account);
                         }
-                        System.out.println();
                         break;
                     }
-                    case 5:{
+                    case 3:{
                         option = 0;
-                        System.out.println("\nMENU PRINCIPAL / ENTRAR EM CONTA");
-                        System.out.println("-> LOGIN\n");
+                        System.out.println("\nMENU PRINCIPAL / LOGIN CONTA");
                         String userId = UI.printIdScanner();
                         Account account = bankingSystem.findAccountByUserId(bankingSystem.listAccounts(), userId);
                         if(account != null){
@@ -88,43 +66,47 @@ public class Program {
                                 option = UI.printAccountMenu(account);
                                 switch (option){
                                     case 1:{
+                                        System.out.println("\nMENU PRINCIPAL CONTA / SAQUE");
                                         double amount = UI.printAmount();
                                         bankingSystem.withdrawTransaction(amount, account, TransactionType.WITHDRAW);
                                         break;
                                     }
                                     case 2:{
+                                        System.out.println("\nMENU PRINCIPAL CONTA / DEPOSITO");
                                         double amount = UI.printAmount();
                                         bankingSystem.depositTransaction(amount, account, TransactionType.DEPOSIT);
                                         break;
                                     }
                                     case 3:{
+                                        System.out.println("\nMENU PRINCIPAL CONTA / TRANSFERENCIA");
                                         String userIdReceiver = UI.printIdScanner();
                                         if (bankingSystem.findAccountByUserId(bankingSystem.listAccounts(), userIdReceiver) != null){
                                             double amount = UI.printAmount();
                                             bankingSystem.transferTransaction(amount, account, bankingSystem.findAccountByUserId(bankingSystem.listAccounts(), userIdReceiver), TransactionType.TRANSFER);
                                         }
                                         else {
-                                            System.out.println("Conta inexistente");
+                                            System.out.println("ERRO: CONTA INEXISTENTE");
                                         }
                                         break;
                                     }
                                     case 4:{
+                                        System.out.println("\nMENU PRINCIPAL CONTA / EXTRATO");
                                         bankingSystem.transactionsStatement(bankingSystem.listTransactions(), account);
                                         break;
                                     }
                                     case 5:{
-                                        System.out.println("DESLOGADO COM SUCESSO\n");
+                                        System.out.println("\nDESLOGADO COM SUCESSO");
                                         break;
                                     }
                                 }
                             }
                         }
                         else {
-                            System.out.println("Conta inexistente");
+                            System.out.println("ERRO: CONTA INEXISTENTE");
                         }
                         break;
                     }
-                    case 6:{
+                    case 4:{
                         System.out.println("\nOBRIGADO PELA PREFERENCIA!");
                         exit(0);
                     }
@@ -140,7 +122,7 @@ public class Program {
             e.printStackTrace();
         }
         catch (IOException e){
-            System.out.println("Input/Output vazio");
+            System.out.println("Input/Output vazio.");
             e.printStackTrace();
         }
     }

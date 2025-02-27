@@ -1,7 +1,6 @@
 package br.org.aplicacaobancaria.application;
 
 import br.org.aplicacaobancaria.domain.bank.*;
-import br.org.aplicacaobancaria.domain.services.transaction.Transaction;
 import br.org.aplicacaobancaria.domain.user.Business;
 import br.org.aplicacaobancaria.domain.user.Client;
 import br.org.aplicacaobancaria.domain.user.ClientType;
@@ -17,14 +16,13 @@ public class UI {
     public static int printMainMenu() {
         int option;
 
+        System.out.println();
         System.out.println("MENU PRINCIPAL");
-        System.out.println("1 - CADASTRO DE CLIENTE");
-        System.out.println("2 - LISTAR CLIENTES");
-        System.out.println("3 - CADASTRO DE CONTA");
-        System.out.println("4 - LISTAR CONTAS");
-        System.out.println("5 - ENTRAR EM CONTA");
-        System.out.println("6 - SAIR");
-        System.out.print("Digite uma opcao: ");
+        System.out.println("1 - CADASTRO DE CONTA");
+        System.out.println("2 - LISTAR CONTAS");
+        System.out.println("3 - ENTRAR EM CONTA");
+        System.out.println("4 - SAIR");
+        System.out.print("DIGITE UMA OPCAO: ");
         option = readMenuOption();
         return option;
     }
@@ -39,6 +37,7 @@ public class UI {
 
         while (true){
             System.out.println();
+            System.out.println("TIPO DE CLIENTE:");
             for(ClientType ct : ClientType.values()){
                 System.out.printf("%d - %s%n", ct.getId(), ct.getName());
             }
@@ -47,19 +46,19 @@ public class UI {
             System.out.println();
             switch (option){
                 case 1:{
-                    System.out.print("CPF (somente numeros): ");
+                    System.out.print("CPF (SOMENTE NUMEROS): ");
                     String clientId = sc.next();
                     return new Personal(clientName, clientEmail, clientId);
                 }
                 case 2:{
-                    System.out.print("CNPJ (somente numeros): ");
+                    System.out.print("CNPJ (SOMENTE NUMEROS): ");
                     String clientId = sc.next();
                     System.out.print("CAPITAL DECLARADO: ");
                     Double clientStatedCapital = sc.nextDouble();
                     return new Business(clientName, clientEmail,clientId, clientStatedCapital);
                 }
                 default:{
-                    System.out.println("-> OPCAO INVALIDA");
+                    System.out.println("ERRO: OPCAO INVALIDA");
                     break;
                 }
             }
@@ -73,8 +72,9 @@ public class UI {
         String branchNumber = sc.next();
         System.out.print("NUMERO DA CONTA: ");
         String accountNumber = sc.next();
+        System.out.println();
         while (true){
-            System.out.println();
+            System.out.println("TIPO DE CONTA: ");
             if (client instanceof Personal){
                 for(AccountType at : AccountType.values()){
                         System.out.printf("%d - %s%n", at.getId(), at.getName());
@@ -93,7 +93,7 @@ public class UI {
                         return new PayrollAccount(branchNumber, accountNumber, client);
                     }
                     default:{
-                        System.out.println("-> OPCAO INVALIDA");
+                        System.out.println("ERRO: OPCAO INVALIDA");
                         break;
                     }
                 }
@@ -109,7 +109,7 @@ public class UI {
                         return new CheckingAccount(branchNumber, accountNumber, client);
                     }
                     default:{
-                        System.out.println("-> OPCAO INVALIDA");
+                        System.out.println("ERRO: OPCAO INVALIDA");
                         break;
                     }
                 }
@@ -127,22 +127,21 @@ public class UI {
     public static int printAccountMenu(Account account){
         int option;
 
-        System.out.println();
+        System.out.println("\nMENU PRINCIPAL CONTA");
         System.out.printf("Olá, %s. Tipo de conta: %s. Saldo atual: %,.2f. Limite disponivel: %,.2f\n", account.getClient().getName(), account.getAccountType().getName(), account.getBalance(), account.availableLimit());
         System.out.println("1 - SAQUE");
         System.out.println("2 - DEPOSITO");
         System.out.println("3 - TRANSFERENCIA");
         System.out.println("4 - EXTRATO");
         System.out.println("5 - SAIR");
-        System.out.print("Digite uma opcao: ");
+        System.out.print("DIGITE UMA OPCAO: ");
         option = readMenuOption();
-        System.out.println();
         return option;
     }
 
     public static Double printAmount(){
         Scanner sc = new Scanner(System.in);
-        System.out.print("Valor: ");
+        System.out.print("VALOR: ");
         return sc.nextDouble();
     }
 
