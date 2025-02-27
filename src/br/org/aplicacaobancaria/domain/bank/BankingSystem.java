@@ -2,6 +2,7 @@ package br.org.aplicacaobancaria.domain.bank;
 
 import br.org.aplicacaobancaria.domain.services.transaction.Transaction;
 import br.org.aplicacaobancaria.domain.services.transaction.TransactionType;
+import br.org.aplicacaobancaria.domain.user.Business;
 import br.org.aplicacaobancaria.domain.user.Client;
 
 import java.io.IOException;
@@ -34,6 +35,16 @@ public class BankingSystem {
     }
 
     public void registerAccount(Account account){
+        if (account.getClient() instanceof Business){
+            Business businessClient = (Business) account.getClient();
+            account.setLimit(businessClient.getStatedCapital()*0.65);
+        } else {
+            if (account instanceof CheckingAccount){
+                account.setLimit(100.0);
+            } else {
+                account.setLimit(0.0);
+            }
+        }
         accounts.add(account);
     }
 
@@ -85,7 +96,6 @@ public class BankingSystem {
                 strBuilder.append(String.format("%,.2f", transaction.getAmount()));
                 strBuilder.append(System.lineSeparator());
             }
-            System.out.println(strBuilder.toString());
             try{
                 Files.write(destinationFile, strBuilder.toString().getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE);
             } catch(NoSuchFileException e){

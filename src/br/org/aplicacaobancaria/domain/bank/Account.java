@@ -15,7 +15,6 @@ public abstract class Account {
         this.accountNumber = accountNumber;
         this.balance = 0.0;
         this.client = client;
-        this.limit = 100.0;
     }
 
     public Account(String branchNumber, String accountNumber) {
@@ -69,6 +68,14 @@ public abstract class Account {
 
     public void setBranchNumber(String branchNumber) {
         this.branchNumber = branchNumber;
+    }
+
+    public double availableLimit(){
+        if (getBalance() <= 0){
+            return getBalance() + getLimit();
+        } else {
+            return getBalance();
+        }
     }
 
     @Override

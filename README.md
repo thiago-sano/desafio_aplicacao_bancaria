@@ -80,6 +80,7 @@ classDiagram
             - balance : Double
             - accountType : AccountType
             - client : Client
+            + availableLimit() double
         }
         class SavingsAccount{
 

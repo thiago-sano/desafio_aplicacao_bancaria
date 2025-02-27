@@ -75,7 +75,7 @@ public class UI {
         String accountNumber = sc.next();
         while (true){
             System.out.println();
-            if (client.getClientType().getAccountType() == 1){
+            if (client instanceof Personal){
                 for(AccountType at : AccountType.values()){
                         System.out.printf("%d - %s%n", at.getId(), at.getName());
                 }
@@ -115,7 +115,6 @@ public class UI {
                 }
                 System.out.println();
             }
-
         }
     }
 
@@ -129,7 +128,7 @@ public class UI {
         int option;
 
         System.out.println();
-        System.out.printf("Olá, %s. Tipo de conta: %s. Saldo atual: %,.2f\n", account.getClient().getName(), account.getAccountType().getName(), account.getBalance());
+        System.out.printf("Olá, %s. Tipo de conta: %s. Saldo atual: %,.2f. Limite disponivel: %,.2f\n", account.getClient().getName(), account.getAccountType().getName(), account.getBalance(), account.availableLimit());
         System.out.println("1 - SAQUE");
         System.out.println("2 - DEPOSITO");
         System.out.println("3 - TRANSFERENCIA");
