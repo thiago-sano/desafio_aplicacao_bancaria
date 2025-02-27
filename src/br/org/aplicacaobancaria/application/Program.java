@@ -28,74 +28,77 @@ public class Program {
         bankingSystem.registerAccount(account2);
 
         Client client3 = new Personal("Caio Azevedo", "caioazevedo@hotmail.com", "12485822212");
-        Account account3 = new PayrollAccount("4096", "0129875-1", client3);
+        Account account3 = new PayrollAccount("3926", "0129875-1", client3);
         bankingSystem.registerClient(client3);
         bankingSystem.registerAccount(account3);
 
         Client client4 = new Business("Midia LTDA", "contato@midia.com", "01685012000165", 32568.00);
-        Account account4 = new CheckingAccount("4096", "0129875-1", client4);
+        Account account4 = new CheckingAccount("4096", "3654812-2", client4);
         bankingSystem.registerClient(client4);
         bankingSystem.registerAccount(account4);
 
         int option;
-        try{
-            while (true){
+        try {
+            while (true) {
                 option = UI.printMainMenu();
-                switch (option){
-                    case 1:{
+                switch (option) {
+                    case 1: {
                         System.out.println("\nMENU PRINCIPAL / CADASTRO DE CONTA");
                         Client client = UI.printRegisterClient();
-                        bankingSystem.registerClient(client);
-                        Account account = UI.printRegisterAccount(client);
-                        bankingSystem.registerAccount(account);
+                        if (bankingSystem.findAccountByUserId(bankingSystem.listAccounts(), client.getId()) == null) {
+                            bankingSystem.registerClient(client);
+                            Account account = UI.printRegisterAccount(client);
+                            bankingSystem.registerAccount(account);
+                        } else {
+                            System.out.println("CPF/CNPJ ASSOCIADO A OUTRO CLIENTE");
+                        }
                         break;
                     }
-                    case 2:{
+                    case 2: {
                         System.out.println("\nMENU PRINCIPAL / LISTAR CONTAS");
-                        for (Account account : bankingSystem.listAccounts()){
+                        for (Account account : bankingSystem.listAccounts()) {
                             System.out.println(account);
                         }
                         break;
                     }
-                    case 3:{
+                    case 3: {
                         option = 0;
                         System.out.println("\nMENU PRINCIPAL / LOGIN CONTA");
                         String userId = UI.printIdScanner();
                         Account account = bankingSystem.findAccountByUserId(bankingSystem.listAccounts(), userId);
-                        if(account != null){
-                            while(option !=6){
+                        if (account != null) {
+                            while (option != 6) {
                                 option = UI.printAccountMenu(account);
-                                switch (option){
-                                    case 1:{
+                                switch (option) {
+                                    case 1: {
                                         System.out.println("\nMENU PRINCIPAL CONTA / SAQUE");
                                         double amount = UI.printAmount();
                                         bankingSystem.withdrawTransaction(amount, account, TransactionType.WITHDRAW);
                                         break;
                                     }
-                                    case 2:{
+                                    case 2: {
                                         System.out.println("\nMENU PRINCIPAL CONTA / DEPOSITO");
                                         double amount = UI.printAmount();
                                         bankingSystem.depositTransaction(amount, account, TransactionType.DEPOSIT);
                                         break;
                                     }
-                                    case 3:{
+                                    case 3: {
                                         System.out.println("\nMENU PRINCIPAL CONTA / TRANSFERENCIA");
                                         String userIdReceiver = UI.printIdScanner();
-                                        if (bankingSystem.findAccountByUserId(bankingSystem.listAccounts(), userIdReceiver) != null){
+                                        if (bankingSystem.findAccountByUserId(bankingSystem.listAccounts(), userIdReceiver) != null) {
                                             double amount = UI.printAmount();
                                             bankingSystem.transferTransaction(amount, account, bankingSystem.findAccountByUserId(bankingSystem.listAccounts(), userIdReceiver), TransactionType.TRANSFER);
-                                        }
-                                        else {
+                                        } else {
                                             System.out.println("ERRO: CONTA INEXISTENTE");
                                         }
                                         break;
                                     }
-                                    case 4:{
+                                    case 4: {
                                         System.out.println("\nMENU PRINCIPAL CONTA / EXTRATO");
                                         bankingSystem.transactionsStatement(bankingSystem.listTransactions(), account);
                                         break;
                                     }
-                                    case 5:{
+                                    case 5: {
                                         System.out.println("\nMENU PRINCIPAL CONTA / ALTERACAO DE HORARIO");
                                         System.out.println("RESTRICAO ATUAL: " + account.getStartTime() + " ATE " + account.getEndTime());
                                         bankingSystem.editTimeRestriction(account, UI.newTime());
@@ -103,38 +106,34 @@ public class Program {
                                         System.out.println(account.getEndTime());
                                         break;
                                     }
-                                    case 6:{
+                                    case 6: {
                                         System.out.println("\nDESLOGADO COM SUCESSO");
                                         break;
                                     }
                                 }
                             }
-                        }
-                        else {
+                        } else {
                             System.out.println("ERRO: CONTA INEXISTENTE");
                         }
                         break;
                     }
-                    case 4:{
+                    case 4: {
                         System.out.println("\nOBRIGADO PELA PREFERENCIA!");
                         exit(0);
                     }
-                    default:{
+                    default: {
                         System.out.println("\nESCOLHA UMA OPCAO VALIDA\n");
                         break;
                     }
                 }
             }
-        }
-        catch (InputMismatchException e){
+        } catch (InputMismatchException e) {
             System.out.println("\nEntrada de dados invalida.");
             //e.printStackTrace();
-        }
-        catch (DateTimeParseException e){
+        } catch (DateTimeParseException e) {
             System.out.println("\nEntrada de horario invalida.");
             //e.printStackTrace();
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             System.out.println("\nInput/Output vazio.");
             //e.printStackTrace();
         }
