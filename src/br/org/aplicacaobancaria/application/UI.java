@@ -6,6 +6,8 @@ import br.org.aplicacaobancaria.domain.user.Client;
 import br.org.aplicacaobancaria.domain.user.ClientType;
 import br.org.aplicacaobancaria.domain.user.Personal;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class UI {
@@ -133,10 +135,22 @@ public class UI {
         System.out.println("2 - DEPOSITO");
         System.out.println("3 - TRANSFERENCIA");
         System.out.println("4 - EXTRATO");
-        System.out.println("5 - SAIR");
+        System.out.println("5 - ALTERAR RESTRICAO DE HORARIO");
+        System.out.println("6 - SAIR");
         System.out.print("DIGITE UMA OPCAO: ");
         option = readMenuOption();
         return option;
+    }
+
+    public static LocalTime[] newTime(){
+        Scanner sc = new Scanner(System.in);
+        LocalTime[] timeArray = new LocalTime[2];
+        System.out.print("INFORME O HORARIO INICIAL (HH:MM): ");
+        timeArray[0] = LocalTime.parse(sc.next(), DateTimeFormatter.ofPattern("HH:mm"));
+        System.out.print("INFORME O HORARIO FINAL (HH:MM): ");
+        timeArray[1] = LocalTime.parse(sc.next(), DateTimeFormatter.ofPattern("HH:mm"));
+
+        return timeArray;
     }
 
     public static Double printAmount(){

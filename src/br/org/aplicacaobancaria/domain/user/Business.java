@@ -1,6 +1,6 @@
 package br.org.aplicacaobancaria.domain.user;
 
-public class Business extends Client{
+public class Business extends Client {
     private Double statedCapital;
     private final ClientType clientType;
 
@@ -12,10 +12,6 @@ public class Business extends Client{
 
     public Double getStatedCapital() {
         return statedCapital;
-    }
-
-    public void setStatedCapital(Double statedCapital) {
-        this.statedCapital = statedCapital;
     }
 
     @Override

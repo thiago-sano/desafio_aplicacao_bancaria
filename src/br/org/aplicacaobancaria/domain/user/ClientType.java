@@ -1,8 +1,8 @@
 package br.org.aplicacaobancaria.domain.user;
 
 public enum ClientType {
-    PERSONAL (1,"PESSOA FISICA", 1),
-    BUSINESS (2, "PESSOA JURIDICA", 2);
+    PERSONAL(1, "PESSOA FISICA", 1),
+    BUSINESS(2, "PESSOA JURIDICA", 2);
 
     private int id;
     private String name;
@@ -14,7 +14,7 @@ public enum ClientType {
         this.accountType = accountType;
     }
 
-    public int getId(){
+    public int getId() {
         return id;
     }
 
@@ -22,7 +22,7 @@ public enum ClientType {
         return name.toUpperCase();
     }
 
-    public int getAccountType(){
+    public int getAccountType() {
         return accountType;
     }
 }

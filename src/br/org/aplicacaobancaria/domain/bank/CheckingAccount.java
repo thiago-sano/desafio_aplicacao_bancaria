@@ -2,7 +2,7 @@ package br.org.aplicacaobancaria.domain.bank;
 
 import br.org.aplicacaobancaria.domain.user.Client;
 
-public class CheckingAccount extends Account{
+public class CheckingAccount extends Account {
     private Double limit;
     private final AccountType accountType;
 

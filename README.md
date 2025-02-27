@@ -80,6 +80,9 @@ classDiagram
             - balance : Double
             - accountType : AccountType
             - client : Client
+            - limit : Double
+            - startTime : LocalTime
+            - endTime : LocalTime
             + availableLimit() double
         }
         class SavingsAccount{
@@ -107,7 +110,7 @@ classDiagram
             + filterTransactionsList(transactions : List, account : Account) List
             + findAccountByUserId(accounts : List<Account>, userId : String) Account
             + dateTimeNow() String
-            + transactionStatement(transactions : List, account : Accont) void
+            + transactionStatement(transactions : List, account : Account) void
             + withdrawTransaction(amount : double, account : Account, transactionType : TransactionType) void
             + depositTransaction(amount : double, account : Account, transactionType : TransactionType) void
             + transferTransaction(amount: double, sender : Account, receiver : Account, transactionType : TransactionType) void
@@ -120,11 +123,10 @@ classDiagram
             - account : Account
             - sender : Account
             - receiver : Account
-            - receiverId : String
             - transactionType : TransactionType
             - dateTimeNow : String
 
-            + isWithinTimeRestriction () boolean
+            + isWithinTimeRestriction (account : Account) boolean
             + isBalancePreviewOk(amount : double, account : Account) boolean
             + isTransactionOk(transaction : Transaction) boolen
             + deposit(amount : double, account : Account, transactionType : TransactionType, localDateTime : String) void

@@ -7,6 +7,7 @@ import br.org.aplicacaobancaria.domain.user.Client;
 import br.org.aplicacaobancaria.domain.user.Personal;
 
 import java.io.IOException;
+import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
 
 import static java.lang.System.exit;
@@ -62,7 +63,7 @@ public class Program {
                         String userId = UI.printIdScanner();
                         Account account = bankingSystem.findAccountByUserId(bankingSystem.listAccounts(), userId);
                         if(account != null){
-                            while(option !=5){
+                            while(option !=6){
                                 option = UI.printAccountMenu(account);
                                 switch (option){
                                     case 1:{
@@ -95,6 +96,14 @@ public class Program {
                                         break;
                                     }
                                     case 5:{
+                                        System.out.println("\nMENU PRINCIPAL CONTA / ALTERACAO DE HORARIO");
+                                        System.out.println("RESTRICAO ATUAL: " + account.getStartTime() + " ATE " + account.getEndTime());
+                                        bankingSystem.editTimeRestriction(account, UI.newTime());
+                                        System.out.println(account.getStartTime());
+                                        System.out.println(account.getEndTime());
+                                        break;
+                                    }
+                                    case 6:{
                                         System.out.println("\nDESLOGADO COM SUCESSO");
                                         break;
                                     }
@@ -118,12 +127,16 @@ public class Program {
             }
         }
         catch (InputMismatchException e){
-            System.out.println("Entrada de dados inválida.");
-            e.printStackTrace();
+            System.out.println("\nEntrada de dados invalida.");
+            //e.printStackTrace();
+        }
+        catch (DateTimeParseException e){
+            System.out.println("\nEntrada de horario invalida.");
+            //e.printStackTrace();
         }
         catch (IOException e){
-            System.out.println("Input/Output vazio.");
-            e.printStackTrace();
+            System.out.println("\nInput/Output vazio.");
+            //e.printStackTrace();
         }
     }
 }
