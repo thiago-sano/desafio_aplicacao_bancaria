@@ -136,7 +136,8 @@ public class UI {
         System.out.println("3 - TRANSFERENCIA");
         System.out.println("4 - EXTRATO");
         System.out.println("5 - ALTERAR RESTRICAO DE HORARIO");
-        System.out.println("6 - SAIR");
+        System.out.println("6 - ALTERAR LIMITE");
+        System.out.println("7 - SAIR");
         System.out.print("DIGITE UMA OPCAO: ");
         option = readMenuOption();
         return option;

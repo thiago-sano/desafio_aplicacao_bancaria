@@ -4,6 +4,7 @@ import br.org.aplicacaobancaria.domain.services.transaction.Transaction;
 import br.org.aplicacaobancaria.domain.services.transaction.TransactionType;
 import br.org.aplicacaobancaria.domain.user.Business;
 import br.org.aplicacaobancaria.domain.user.Client;
+import br.org.aplicacaobancaria.domain.user.Personal;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -86,6 +87,18 @@ public class BankingSystem {
     public void editTimeRestriction(Account account, LocalTime[] newTime) {
         account.setStartTime(newTime[0]);
         account.setEndTime(newTime[1]);
+    }
+
+    public void editLimit(Account account, double amount) {
+        if (account instanceof CheckingAccount) {
+            if (account.getClient() instanceof Personal){
+                account.setLimit(amount);
+            } else {
+                System.out.println("LIMITE PARA PESSOA JURIDICA BASEADO NO CAPITAL DECLARADO");
+            }
+        } else {
+            System.out.println("LIMITE INDISPONÍVEL PARA SEU TIPO DE CONTA");
+        }
     }
 
     public void transactionsStatement(List<Transaction> transactions, Account account) throws IOException {

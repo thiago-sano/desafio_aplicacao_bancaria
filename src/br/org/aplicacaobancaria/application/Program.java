@@ -67,7 +67,7 @@ public class Program {
                         String userId = UI.printIdScanner();
                         Account account = bankingSystem.findAccountByUserId(bankingSystem.listAccounts(), userId);
                         if (account != null) {
-                            while (option != 6) {
+                            while (option != 7) {
                                 option = UI.printAccountMenu(account);
                                 switch (option) {
                                     case 1: {
@@ -102,11 +102,16 @@ public class Program {
                                         System.out.println("\nMENU PRINCIPAL CONTA / ALTERACAO DE HORARIO");
                                         System.out.println("RESTRICAO ATUAL: " + account.getStartTime() + " ATE " + account.getEndTime());
                                         bankingSystem.editTimeRestriction(account, UI.newTime());
-                                        System.out.println(account.getStartTime());
-                                        System.out.println(account.getEndTime());
                                         break;
                                     }
                                     case 6: {
+                                        System.out.println("\nMENU PRINCIPAL CONTA / ALTERACAO DE LIMITE");
+                                        System.out.printf("LIMITE ATUAL: R$ %,.2f\n", account.getLimit());
+                                        double amount = UI.printAmount();
+                                        bankingSystem.editLimit(account, amount);
+                                        break;
+                                    }
+                                    case 7: {
                                         System.out.println("\nDESLOGADO COM SUCESSO");
                                         break;
                                     }
@@ -122,7 +127,7 @@ public class Program {
                         exit(0);
                     }
                     default: {
-                        System.out.println("\nESCOLHA UMA OPCAO VALIDA\n");
+                        System.out.println("\nESCOLHA UMA OPCAO VALIDA");
                         break;
                     }
                 }
