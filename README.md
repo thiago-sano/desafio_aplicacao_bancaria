@@ -31,6 +31,11 @@ A aplicação deve conter um menu via terminal para seleção da operação dese
 - Desenhe um diagrama de classes e um de sequência para explicar o funcionamento do sistema. O mesmo deve estar na página explicativa (README) do projeto.
 - Sugestão: utilizem MermaidJS: https://github.com/mermaid-js/mermaid/blob/develop/README.md
 
+### Observações: ###
+- Ciente de não ser uma boa prática, foi incluído o cadastro hardcode de quatro contas inciais. Tal escolha teve como objetivo apenas o retrabalhos sempre que o programa fosse executado.
+- Por tal motivo, também foi mantido a opção no menu inicial de LISTAR CONTAS, ciente também de que tais informações não deveriam ficar expostas para qualquer tipo de usuário do sistema.
+
+
 ### Diagrama de classe: ###
 ```mermaid
 classDiagram
