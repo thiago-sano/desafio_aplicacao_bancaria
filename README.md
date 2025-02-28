@@ -152,5 +152,264 @@ classDiagram
             - TRANSFER
         }
     }
-
 ``` 
+
+### Diagramas de sequencia: ###
+## Acesso de agência ##
+```mermaid
+sequenceDiagram
+actor branchEmployee
+UI ->> branchEmployee: show main menu
+branchEmployee ->> UI: select register account menu option
+UI --) branchEmployee: request client info
+branchEmployee ->> UI: input client info
+UI ->> BankingSystem: client id already exists?
+alt is true
+    BankingSystem --) UI: cancel registration and reload UI
+    UI ->> branchEmployee: show main menu
+else is false
+    BankingSystem -) BankingSystem: register client
+    UI --) branchEmployee: request account info
+    branchEmployee ->> UI: input account info
+    UI ->> BankingSystem: object Account
+    BankingSystem ->> BankingSystem: register account
+    BankingSystem --) UI: reload UI
+    UI ->> branchEmployee: show main menu
+end
+```
+## Acesso de cliente ##
+```mermaid
+sequenceDiagram
+actor client
+UI ->> client: show main menu
+client ->> UI: select account log in menu option
+UI --) client: request user id (CPF or CNPJ)
+client ->> UI: input client info
+UI ->> BankingSystem: client id already exists?
+alt is true
+    BankingSystem --) UI: perform login
+    UI ->> client: show client main menu
+    note right of client: when logged in, client could have 6 operations available
+else is false
+    BankingSystem --) UI: cancel login and reload UI
+    UI ->> client: show main menu    
+end
+```
+
+## Operação: saque ##
+```mermaid
+sequenceDiagram
+actor client
+UI ->> client: show client main menu
+client ->> UI: select withdraw operation in menu option
+UI --) client: request amount
+client ->> UI: input amount info
+UI ->> BankingSystem: pass info as parameters
+BankingSystem ->> BankingSystem: uses infos to construct an object Transaction
+BankingSystem ->> Transaction: check if the transaction complies with business rules
+Transaction ->> Transaction: is time now within time restriction?
+alt is true
+        Transaction ->> Transaction: is amount <= 1000?
+        alt is true
+                Transaction ->> Transaction: is balance preview ok?
+                alt is true
+                    Transaction ->> Account: update balance
+                    Transaction --) BankingSystem: transaction done
+                    BankingSystem ->> BankingSystem: record transaction
+                    BankingSystem --) UI: reload UI
+                    UI ->> client: show client main menu
+                else is false
+                    Transaction --) BankingSystem: cancel transaction
+                    BankingSystem --) UI: reload UI
+                    UI ->> client: show client main menu
+                end
+        else is false
+            Transaction --) BankingSystem: cancel transaction
+            BankingSystem --) UI: reload UI
+            UI ->> client: show client main menu
+        end
+else is false
+        Transaction ->> Transaction: is balance preview ok?
+        alt is true
+            Transaction ->> Account: update balance
+            Transaction --) BankingSystem: transaction done
+            BankingSystem ->> BankingSystem: record transaction
+            BankingSystem --) UI: reload UI
+            UI ->> client: show client main menu
+        else is false
+            Transaction --) BankingSystem: cancel transaction
+            BankingSystem --) UI: reload UI
+            UI ->> client: show client main menu
+        end
+end
+```
+
+## Operação: deposito ##
+```mermaid
+sequenceDiagram
+actor client
+UI ->> client: show client main menu
+client ->> UI: select deposit operation in menu option
+UI --) client: request amount
+client ->> UI: input amount info
+UI ->> BankingSystem: pass info as parameters
+BankingSystem ->> BankingSystem: uses infos to construct an object Transaction
+BankingSystem ->> Transaction: check if the transaction complies with business rules
+Transaction ->> Transaction: is a payroll account?
+alt is true
+    Transaction --) BankingSystem: cancel transaction
+    BankingSystem --) UI: reload UI
+    UI ->> client: show client main menu
+else is false
+    Transaction ->> Account: update balance
+    Transaction --) BankingSystem: transaction done
+    BankingSystem ->> BankingSystem: record transaction
+    BankingSystem --) UI: reload UI
+    UI ->> client: show client main menu
+end
+```
+
+## Operação: transferencia ##
+```mermaid
+sequenceDiagram
+actor client
+UI ->> client: show client main menu
+client ->> UI: select transfer operation in menu option
+UI --) client: request receiver id
+client ->> UI: input receiver id info
+UI ->> BankingSystem: client id already exists?
+alt is true
+    UI --) client: request amount
+    client ->> UI: input amount info
+    UI ->> BankingSystem: pass info as parameters
+    BankingSystem ->> BankingSystem: uses infos to construct an object Transaction
+    BankingSystem ->> Transaction: check if the transaction complies with business rules
+    par Transaction to Transaction
+        Transaction ->> Transaction: is receiver account a payroll account and is sender client not a business client?
+        alt is true
+            Transaction --) BankingSystem: cancel transaction
+            BankingSystem --) UI: reload UI
+            UI ->> client: show client main menu
+        end
+    end
+    par Transaction to Transaction
+        Transaction ->> Transaction: is sender account a payroll account and is receiver client id not equals sender client id?
+        alt is true
+            Transaction --) BankingSystem: cancel transaction
+            BankingSystem --) UI: reload UI
+            UI ->> client: show client main menu
+        end
+    end
+    par Transaction to Transaction
+        Transaction ->> Transaction: are sender client id and receiver client id equals?
+        alt is true
+            Transaction --) BankingSystem: cancel transaction
+            BankingSystem --) UI: reload UI
+            UI ->> client: show client main menu
+        end
+    end
+    par Transaction to Transaction
+        Transaction ->> Transaction: is time now within time restriction?
+        alt is true
+                Transaction ->> Transaction: is amount <= 1000?
+                alt is true
+                        Transaction ->> Transaction: is balance preview ok?
+                        alt is true
+                            Transaction ->> Account: update sender balance
+                            Transaction ->> Account: update receiver balance
+                            Transaction --) BankingSystem: transaction done
+                            BankingSystem ->> BankingSystem: record sender transaction
+                            BankingSystem ->> BankingSystem: record receiver transaction
+                            BankingSystem --) UI: reload UI
+                            UI ->> client: show client main menu
+                        else is false
+                            Transaction --) BankingSystem: cancel transaction
+                            BankingSystem --) UI: reload UI
+                            UI ->> client: show client main menu
+                        end
+                else is false
+                    Transaction --) BankingSystem: cancel transaction
+                    BankingSystem --) UI: reload UI
+                    UI ->> client: show client main menu
+                end
+        else is false
+                Transaction ->> Transaction: is balance preview ok?
+                alt is true
+                    Transaction ->> Account: update sender balance
+                    Transaction ->> Account: update receiver balance
+                    Transaction --) BankingSystem: transaction done
+                    BankingSystem ->> BankingSystem: record sender transaction
+                    BankingSystem ->> BankingSystem: record receiver transaction
+                    BankingSystem --) UI: reload UI
+                    UI ->> client: show client main menu
+                else is false
+                    Transaction --) BankingSystem: cancel transaction
+                    BankingSystem --) UI: reload UI
+                    UI ->> client: show client main menu
+                end
+        end
+    end
+else is false
+    BankingSystem --) UI: cancel transaction and reload UI
+    UI ->> client: show client main menu
+end
+```
+
+## Operação: extrato ##
+```mermaid
+sequenceDiagram
+actor client
+UI ->> client: show client main menu
+client ->> UI: select transfer operation in menu option
+UI ->> BankingSystem: pass acount info as parameter
+BankingSystem ->> BankingSystem: filter recorded transactions by account
+BankingSystem ->> OS Windows: directory already exists?
+alt is true:
+    BankingSystem ->> OS Windows: create file csv
+else is false:
+    BankingSystem ->> OS Windows: create directory
+    BankingSystem ->> OS Windows: create file
+end 
+BankingSystem --) UI: reload UI
+UI ->> client: show client main menu
+```
+
+## Operação: alteração de restrição de horário ##
+```mermaid
+sequenceDiagram
+actor client
+UI ->> client: show client main menu
+client ->> UI: select edit time restriction operation in menu option
+UI --) client: request start time
+client ->> UI: input start time info
+UI --) client: request end time
+client ->> UI: input end time info
+UI ->> BankingSystem: pass info as parameters
+BankingSystem ->> Account: update time restriction preferences
+BankingSystem --) UI: reload UI
+UI ->> client: show client main menu
+```
+
+## Operação: alteração de limite de credito ##
+```mermaid
+sequenceDiagram
+actor client
+UI ->> client: show client main menu
+client ->> UI: select edit limit operation in menu option
+UI --) client: request amount
+client ->> UI: input amount info
+UI ->> BankingSystem: pass info as parameters
+BankingSystem ->> BankingSystem: is account an instance of CheckingAccount?
+alt is true
+    BankingSystem ->> BankingSystem: is client an instance of Personal?
+    alt is true
+        BankingSystem ->> Account: update limit
+    else is false
+        BankingSystem --) UI: cancel operation and reload UI
+        UI ->> client: show main menu
+    end
+else is false
+    BankingSystem --) UI: cancel operation and reload UI
+    UI ->> client: show main menu
+end
+```
